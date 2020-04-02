@@ -1,50 +1,52 @@
 import readDataList
+import time
 
 def GS():
     """Gale-Shapley Algorithm (p.117 in course book)"""
 
-    men, women = readDataList.readDataList()
-    pairs = {}  #dictionay with 'woman : man'-pairs
+    #print("GS start")
+    tstart = time.time()
+    #print("Read data start")
+    men, women, readTime= readDataList.readDataList()
+    #print("Read data finished")
+    pairs = {}  #dictionay with 'woman : man'-pairs (just indices)
     p = men.copy()
 
     while len(p) > 0:
         m = p.pop(0)  #take out the first element of p (Person object)
-        w = m.prefs.pop(0)  #the woman m prefers the most and hasn't proposed to yet (integer/index)
+        w = m.prefs.pop(0)  #the woman m prefers the most and hasn't proposed to yet (int/index)
 
         if w not in pairs:  #if w doesn't have a partner
             pairs[w] = m.id
         else:
             #determine if w prefers m over her current partner mw
-            tempWoman = 0  #woman with id = w
-            womIndex = 0
-            while tempWoman == 0:
-                if women[womIndex].id == w:
-                    tempWoman = women[womIndex]
-                womIndex += 1
-
-            mw = pairs[w]
-            if tempWoman.prefs.index(m.id) < tempWoman.prefs.index(mw):
+            mw = men[pairs[w]]
+            if women[w].prefs[m.id] < women[w].prefs[mw.id]:
                 del pairs[w]
                 pairs[w] = m.id
-
-                tempMan = 0  # man with id = mw
-                manIndex = 0
-                while tempMan == 0:
-                    if men[manIndex].id == mw:
-                        tempMan = men[manIndex]
-                    manIndex += 1
-                p.append(tempMan)
+                p.append(mw)
             else:
                 p.append(m)
 
-    return pairs
+    tend = time.time()
+    resTime = tend - tstart
+    #print("GS finished")
+    return pairs, resTime, readTime
 
 #RUN ALGORITHM
-result = GS()
+result, algTime, readTime = GS()
 
 #SORT COUPLES ACCORDING TO WOMEN
+sortTS = time.time()
 result = sorted(result.items(), key=lambda kv: kv[0])
-for p in result:
-    print(p[1] + 1)
+sortTE = time.time()
+sortTime = sortTE - sortTS
+
+#for p in result:
+#    print(p[1] + 1)  #increment id (no need to keep track of indexes anymore)
+
+#COMMENT THIS WHEN TESTING THE PROGRAM
+print("TIMES: read data - {} ; algorithm - {} ; sort map - {}".format(readTime, algTime, sortTime))
+print("Total time: ", readTime+algTime+sortTime)
 
 

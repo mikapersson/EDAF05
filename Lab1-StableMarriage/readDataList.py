@@ -1,9 +1,12 @@
 import sys
 import person
+import time
+
 
 def readDataList():  #original readData file
     """Read input into lists of men and women (handles messy input)"""
 
+    tstart = time.time()
     men = []
     women = []
     N = int(sys.stdin.readline())  #number of pairs
@@ -30,4 +33,18 @@ def readDataList():  #original readData file
             tempMan = person.Person(tempID, tempPref)
             men.append(tempMan)
 
-    return men, women
+    #Invert preference lists for women
+    for w in women:
+        invertedPref = [0]*N
+        for index, value in enumerate(w.prefs):
+            invertedPref[value] = index
+        w.prefs = invertedPref
+
+    tend = time.time()
+
+    #Sort list of women
+    sortedWomen = sorted(women, key = lambda w : w.id, reverse = False)
+    sortedMen = sorted(men, key=lambda m : m.id, reverse=False)
+
+    resTime = tend - tstart
+    return sortedMen, sortedWomen, resTime  #two lists + time
