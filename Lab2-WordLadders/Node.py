@@ -1,5 +1,5 @@
 class Node:
-    """Class describing a node (word of five letters)"""
+    """Class describing a node (five letter word)"""
 
     def __init__(self, w, al, v, p):
         self.word = w  #actual word

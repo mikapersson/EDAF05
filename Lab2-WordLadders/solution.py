@@ -33,9 +33,6 @@ def BFS(graph, s, t):
     if s.word == t.word:
         print(0)
         return
-    #for n in graph.items():  #comment this and we go from 5sec to 0.03sec running time for the algorithm
-    #    n[1].visited = 0
-    #    n[1].prev = 0
     s.visited = 1
     q = [s]
     while len(q) > 0:
@@ -59,7 +56,10 @@ for q in queries:  #running algorithm
     #n1 = find_node(q[0])
     #n2 = find_node(q[1])
     #BFS(graph, n1, n2)
+    for n in graph.items():  #comment this and we go from 5sec to 0.03sec running time for the algorithm
+        n[1].visited = 0     #REMOVE COMMENTS IF TESTING THE PROGRAM
+        n[1].prev = 0        #
     BFS(graph, graph[q[0]], graph[q[1]])
 aetime = time.time()
 atime = aetime - astime  #total time for running algorithm
-print("Create graph: {}\nRun algorithm: {}".format(gtime, atime))  #comment when running check_solution.sh
+#print("Create graph: {}\nRun algorithm: {}".format(gtime, atime))  #comment when running check_solution.sh
