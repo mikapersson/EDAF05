@@ -1,13 +1,14 @@
 import make_graph
 import sys
 import time
+import queue
 
 """Solution for Wordladders, may be improved.."""
 
 N, Q = list(map(int, sys.stdin.readline().split(' ')))  #reading number of words and queries
-words = []
+words = [0]*N
 for i in range(N):  #reading five-letter words
-    words.append(sys.stdin.readline().replace('\n',''))
+    words[i] = sys.stdin.readline().replace('\n','')
 
 gstime = time.time()  #start stopwatch for graph creation
 graph = make_graph.make_graph(words)  #O(n^2)
@@ -34,17 +35,18 @@ def BFS(graph, s, t):
         print(0)
         return
     s.visited = 1
-    q = [s]
-    while len(q) > 0:
-        v = q.pop(0)
+    q = queue.Queue(maxsize=N)
+    q.put(s)
+    while q.qsize() > 0:
+        v = q.get()  #constant
         for adj in v.adj_list:
             if adj.visited == 0:
                 adj.visited = 1
-                q.append(adj)
+                q.put(adj)
                 adj.prev = v
                 if adj.word == t.word:
-                    print(countEdges(adj))
-                    return
+                    print(countEdges(adj))  #Could use count attribute instead of traversing backwards to prev
+                    return                  #since we don't need to know the path
     print("Impossible")
 
 queries = []
@@ -56,10 +58,13 @@ for q in queries:  #running algorithm
     #n1 = find_node(q[0])
     #n2 = find_node(q[1])
     #BFS(graph, n1, n2)
+    BFS(graph, graph[q[0]], graph[q[1]])
+
+    #RESET GRAPH
     for n in graph.items():  #comment this and we go from 5sec to 0.03sec running time for the algorithm
         n[1].visited = 0     #REMOVE COMMENTS IF TESTING THE PROGRAM
         n[1].prev = 0        #
-    BFS(graph, graph[q[0]], graph[q[1]])
+
 aetime = time.time()
 atime = aetime - astime  #total time for running algorithm
 #print("Create graph: {}\nRun algorithm: {}".format(gtime, atime))  #comment when running check_solution.sh
