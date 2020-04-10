@@ -6,6 +6,7 @@ from time import time
 
 """Solution for making friends lab"""
 
+print("Solving problem...")
 prims = False  #run Prim's algorithm if True, otherwise Kruskal's algorithm
 
 rstime = time()
@@ -21,13 +22,15 @@ if prims:
 
 retime = time()
 readTime = retime - rstime
-
+print("Time for reading data: ", readTime)
 #RUN ALGORITHM
 astime = time()
 if prims:
     prim(graph)
 else:
+    print("Entering Kruskal")
     kruskal(edges)
+    print("Exiting Kruskal")
 aetime = time()
 algTime = aetime - astime
 #print("Total time for reading and creating graph: {}\nTotal time for running algorithm: {}".format(readTime, algTime))
