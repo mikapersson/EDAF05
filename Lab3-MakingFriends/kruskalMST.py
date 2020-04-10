@@ -32,23 +32,17 @@ def kruskal(edges):
 
     sortedEdges, vertices = setup(edges)  #O(nlogn)
     estime = time()
-    setuptime = estime - sstime
+    setuptime = estime - sstime  #15 sec
     #print("Finished setup in: ", setuptime)
-    #print("Initializing disjoint sets")
-    djstime = time()
 
-    ufset = DisjointSets(vertices)
-
-    djetime = time()
-    djtime = djetime - djstime
-    #print("Finished initialization of dj-set in: ", djtime)
+    ufset = DisjointSets(vertices)  #very quick
 
     minWeight = 0  #total weight of the MST
 
     #print("Entering while loop")
     wstime = time()
     while sortedEdges:
-        distance, nodes = heappop(sortedEdges)
+        distance, nodes = heappop(sortedEdges)  #O(logn)
         node1 = nodes[0]
         node2 = nodes[1]
         sameSet = ufset.sameSet(node1, node2)
@@ -56,7 +50,7 @@ def kruskal(edges):
             minWeight += distance
             ufset.union(node1, node2)
     wetime = time()
-    wtime = wetime - wstime
+    wtime = wetime - wstime  #46 sec
     #print("Exiting while, it took: ", wtime)
 
     print(minWeight)
