@@ -1,12 +1,14 @@
 import sys
 from make_graph import *
-from kruskal import *
+from kruskalMST import *
 from primMST import *
+from time import time
 
 """Solution for making friends lab"""
 
 prims = True  #run Prim's algorithm if True, otherwise Kruskal's algorithm
 
+rstime = time()
 N, M = list(map(int, sys.stdin.readline().split(' ')))  #read number of people N and pairs M
 edges = [0]*M  #rows containing edge descriptions
 for i in range(M):
@@ -15,12 +17,18 @@ for i in range(M):
     edges[i] = list(map(int, descriptionList))  #transforming values from chars to ints
 
 graph = make_graph(edges)  #dictionary representation (int : edges)
+retime = time()
+readTime = retime - rstime
 
 #RUN ALGORITHM
+astime = time()
 if prims:
     prim(graph)
 else:
     kruskal(graph)
+aetime = time()
+algTime = aetime - astime
+print("Total time for reading and creating graph: {}\nTotal time for running algorithm: {}".format(readTime, algTime))
 
 
 
