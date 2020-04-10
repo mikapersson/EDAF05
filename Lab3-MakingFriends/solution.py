@@ -6,7 +6,7 @@ from time import time
 
 """Solution for making friends lab"""
 
-prims = True  #run Prim's algorithm if True, otherwise Kruskal's algorithm
+prims = False  #run Prim's algorithm if True, otherwise Kruskal's algorithm
 
 rstime = time()
 N, M = list(map(int, sys.stdin.readline().split(' ')))  #read number of people N and pairs M
@@ -16,7 +16,9 @@ for i in range(M):
     descriptionList = descriptionString.split(' ')
     edges[i] = list(map(int, descriptionList))  #transforming values from chars to ints
 
-graph = make_graph(edges)  #dictionary representation (int : edges)
+if prims:
+    graph = make_graph(edges)  #dictionary representation (int : edges)
+
 retime = time()
 readTime = retime - rstime
 
@@ -25,10 +27,10 @@ astime = time()
 if prims:
     prim(graph)
 else:
-    kruskal(graph)
+    kruskal(edges)
 aetime = time()
 algTime = aetime - astime
-print("Total time for reading and creating graph: {}\nTotal time for running algorithm: {}".format(readTime, algTime))
+#print("Total time for reading and creating graph: {}\nTotal time for running algorithm: {}".format(readTime, algTime))
 
 
 
