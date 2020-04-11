@@ -19,7 +19,7 @@ def closest_distance(point_list):
     points_x.sort(key=lambda point: point.x)  # sort points according to x-coordinate
     points_y.sort(key=lambda point: point.y)  # sort points according to y-coordinate
     closest_dist = closest_rec(points_x, points_y, len(point_list))
-    print(closest_dist)
+    print("{:.6f}".format(closest_dist))
 
 
 def closest_rec(p_x, p_y, size):
@@ -33,7 +33,7 @@ def closest_rec(p_x, p_y, size):
             base_points[index] = base_point
 
         for p1 in range(size-1):  # loop through base points, no need to loop until the last point
-            for p2 in range(p1, size):
+            for p2 in range(p1+1, size):
                 temp_distance = distance(base_points[p1], base_points[p2])
                 if temp_distance < base_distance:
                     base_distance = temp_distance
@@ -58,20 +58,30 @@ def closest_rec(p_x, p_y, size):
     delta = min(left_distance, right_distance)
 
     interval_points = []  # points that have an x-coordinate within the distance 'delta' of the 'middle_point'
-    left_interval = set()
-    right_interval = set()
+    # left_interval = set()
+    # right_interval = set()
     for y_point in p_y:
         inside_interval = abs(y_point.x - middle_point.x) < delta
         if inside_interval:  # y_point is inside the middle interval of width 2*delta
             interval_points.append(y_point)
+            '''
             if y_point in left_side:
                 left_interval.add(y_point)
             else:
                 right_interval.add(y_point)
+            '''
 
-    
+    for index1, point1 in enumerate(interval_points):  # brute force, check closest 15 points in y-direction
+        last_index = 15 + index1
+        if last_index >= len(interval_points):
+            last_index = len(interval_points) - index1
+        for index2 in range(index1+1, last_index):
+            point2 = interval_points[index2]
+            closer = distance(point1, point2)
+            if closer < delta:
+                delta = closer
 
-    return 0
+    return delta
 
 
 closest_distance(points)  # run algorithm
