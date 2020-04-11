@@ -9,7 +9,7 @@ nr_points = int(sys.stdin.readline().replace('\n', ''))  # number of points to c
 points = read_create_points(nr_points)  # read and create list of Point objects
 
 
-def closest_distance(point_list):
+def shortest_distance(point_list):
     """
     Finds and returns the shortest distance between two of the input points.
     (p.40 in course book)
@@ -18,11 +18,11 @@ def closest_distance(point_list):
     points_y = point_list.copy()
     points_x.sort(key=lambda point: point.x)  # sort points according to x-coordinate
     points_y.sort(key=lambda point: point.y)  # sort points according to y-coordinate
-    closest_dist = closest_rec(points_x, points_y, len(point_list))
-    print("{:.6f}".format(closest_dist))
+    shortest_dist = shortest_rec(points_x, points_y, len(point_list))
+    print("{:.6f}".format(shortest_dist))
 
 
-def closest_rec(p_x, p_y, size):
+def shortest_rec(p_x, p_y, size):
     """
     Recursive function for dividing the set of points.
     """
@@ -54,8 +54,8 @@ def closest_rec(p_x, p_y, size):
         else:
             right_y.append(point)
 
-    left_distance = closest_rec(left_x, left_y, cut)  # calculate minimum distance on left side
-    right_distance = closest_rec(right_x, right_y, size - cut)  # -||- right side
+    left_distance = shortest_rec(left_x, left_y, cut)  # calculate minimum distance on left side
+    right_distance = shortest_rec(right_x, right_y, size - cut)  # -||- right side
     delta = min(left_distance, right_distance)
 
     interval_points = []  # points that have an x-coordinate within the distance 'delta' of the 'middle_point'
@@ -87,4 +87,4 @@ def closest_rec(p_x, p_y, size):
     return delta
 
 
-closest_distance(points)  # run algorithm: 1min 8sec
+shortest_distance(points)  # run algorithm: 1min 8sec
