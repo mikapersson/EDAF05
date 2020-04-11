@@ -32,7 +32,7 @@ def kruskal(edges):
 
     sortedEdges, vertices = setup(edges)  #O(nlogn)
     estime = time()
-    setuptime = estime - sstime  #15 sec
+    setuptime = estime - sstime  #5 sec on largest input
     #print("Finished setup in: ", setuptime)
 
     ufset = DisjointSets(vertices)  #very quick
@@ -50,7 +50,7 @@ def kruskal(edges):
             minWeight += distance
             ufset.union(node1, node2)
     wetime = time()
-    wtime = wetime - wstime  #46 sec
+    wtime = wetime - wstime  #25 sec on larget input
     #print("Exiting while, it took: ", wtime)
 
     print(minWeight)

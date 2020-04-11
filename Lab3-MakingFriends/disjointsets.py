@@ -19,7 +19,7 @@ class DisjointSets(object):
 
     def makeSet(self, vertex):
         node = Node(0, len(self.rootNodes), None)  #instatiate node to be placed in the dj-structure
-        self.rootNodes.append(node)
+        self.rootNodes.append(node)  #O(1)
         self.setCount += 1
         self.nodeCount += 1
 
@@ -55,7 +55,7 @@ class DisjointSets(object):
         return True if so, otherwise False.
         """
 
-        node1 = self.rootNodes[node1ID-1]
+        node1 = self.rootNodes[node1ID-1]  #O(1)
         node2 = self.rootNodes[node2ID-1]
         return self.find(node1) == self.find(node2)
 

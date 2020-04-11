@@ -4,10 +4,10 @@ from kruskalMST import *
 from primMST import *
 from time import time
 
-"""(kinda slow) Solution for making friends lab, don't mind all the print statements :)))"""
+"""Solution for making friends lab, don't mind all the print statements :)))"""
 
 #print("Solving problem...")
-prims = True  #run Prim's algorithm if True, otherwise Kruskal's algorithm
+prims = False  #run Prim's algorithm if True, otherwise Kruskal's algorithm
 
 rstime = time()
 N, M = list(map(int, sys.stdin.readline().split(' ')))  #read number of people N and pairs M
@@ -26,10 +26,11 @@ readTime = retime - rstime  #largest output: 22sec
 #RUN ALGORITHM
 astime = time()
 if prims:
-    prim(graph)  #1min 10 sec
+    #print("Running Prim")
+    prim(graph)  #40 sec  when running check_solution.sh
 else:
-    #print("Entering Kruskal")
-    kruskal(edges)  #1min 45sec
+    #print("Running Kruskal")
+    kruskal(edges)  #36 sec when running check_solution.sh
     #print("Exiting Kruskal")
 aetime = time()
 algTime = aetime - astime
