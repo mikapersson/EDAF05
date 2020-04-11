@@ -3,6 +3,7 @@ from readcreatepoints import read_create_points
 from math import inf
 from point import distance
 
+"""Worthless solution with O(n^2) complexity, don't use this."""
 
 nr_points = int(sys.stdin.readline().replace('\n', ''))
 points = read_create_points(nr_points)
@@ -18,4 +19,4 @@ for pos1 in range(len(points)):
         if temp_distance < min_distance:
             min_distance = temp_distance
 
-print("{:.6f}".format(min_distance))  # 
+print("{:.6f}".format(min_distance))  # couldn't finish input 5 in under 10 minutes...
