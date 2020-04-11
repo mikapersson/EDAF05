@@ -37,21 +37,22 @@ def closest_rec(p_x, p_y, size):
                 temp_distance = distance(base_points[p1], base_points[p2])
                 if temp_distance < base_distance:
                     base_distance = temp_distance
+        return base_distance
 
     cut = size//2  # middle index of points lists
     middle_point = p_x[cut]
 
     left_x = p_x[:cut]  # split p_x in half
-    left_y = [0]*cut  # this is filled below
+    left_y = []  # this is filled below
     right_x = p_x[cut:]
-    right_y = [0]*(size-cut)
+    right_y = []
 
     left_side = set(left_x)  # for looking up points efficiently
-    for index, point in enumerate(p_y):  # split p_y in half
+    for point in p_y:  # split p_y in half
         if point in left_side:
-            left_y[index] = point
+            left_y.append(point)
         else:
-            right_y[index] = point
+            right_y.append(point)
 
     left_distance = closest_rec(left_x, left_y, cut)  # calculate minimum distance on left side
     right_distance = closest_rec(right_x, right_y, size - cut)  # -||- right side
@@ -71,10 +72,12 @@ def closest_rec(p_x, p_y, size):
                 right_interval.add(y_point)
             '''
 
+    interval_length = len(interval_points)
     for index1, point1 in enumerate(interval_points):  # brute force, check closest 15 points in y-direction
-        last_index = 15 + index1
-        if last_index >= len(interval_points):
-            last_index = len(interval_points) - index1
+        last_index = 15 + index1 # index for the last element we are checking the distance to
+        if last_index > interval_length:
+            last_index = interval_length
+
         for index2 in range(index1+1, last_index):
             point2 = interval_points[index2]
             closer = distance(point1, point2)
@@ -84,4 +87,4 @@ def closest_rec(p_x, p_y, size):
     return delta
 
 
-closest_distance(points)  # run algorithm
+closest_distance(points)  # run algorithm: 1min 8sec
