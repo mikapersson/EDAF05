@@ -17,3 +17,9 @@ def distance(point1, point2):
     return sqrt((point1.x - point2.x)**2 + (point1.y - point2.y)**2)
 
 
+def check_pair(point1, point2, delta):
+    """
+    Examine if the distance between 'point1' and 'point2' is less than 'delta',
+    returns True is so, otherwise False.
+    """
+    return distance(point1, point2) < delta
