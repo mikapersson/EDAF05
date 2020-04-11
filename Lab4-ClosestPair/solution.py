@@ -87,8 +87,4 @@ def shortest_rec(p_x, p_y, size):
     return delta
 
 
-<<<<<<< HEAD
-shortest_distance(points)  # run algorithm: 1min 8sec
-=======
-closest_distance(points)  # run algorithm: 1min 8sec (check_solution.sh)
->>>>>>> f17d728f9c34a07ad6db0e0b2ef6f08c30517a65
+shortest_distance(points)  # run algorithm: 1min 8sec (check_solution.sh)
