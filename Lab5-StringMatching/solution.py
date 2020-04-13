@@ -19,7 +19,7 @@ def gain(let1, let2):
     int
         The gain of 'let1' and 'let2' according to the gain matrix
     """
-    return gain_matrix[let_to_ind[let1]][let_to_ind[let2]]
+    return int(gain_matrix[let_to_ind[let1]][let_to_ind[let2]])
 
 
 def align_words(string1, string2):
@@ -65,12 +65,12 @@ def align_words_rec(string1, string2, total_gain):
     length2 = len(string2)
     if length1 == 0 and length2 == 0:    # base cases 1
         return total_gain
-    elif length1 > 1 and length2 == 0:   # base case 2
+    elif length1 > 0 and length2 == 0:   # base case 2
         temp_gain = align_words_rec(string1[:-1], '', total_gain) - 4
         result1_list.append(string1[-1])
         result2_list.append('*')
         return total_gain + temp_gain
-    elif length1 == 0 and length2 > 1:  # base case 3:
+    elif length1 == 0 and length2 > 0:  # base case 3:
         temp_gain = align_words_rec('', string2[:-1], total_gain) - 4
         result1_list.append('*')
         result2_list.append(string2[:-1])
@@ -100,7 +100,7 @@ def align_words_rec(string1, string2, total_gain):
             return total_gain + max_value
 
 
-letters, gain_matrix, let_to_ind, queries = setup()  # read input, set up cost_matrix and queries
+gain_matrix, let_to_ind, queries = setup()  # read input, set up cost_matrix and queries
 align_cache = {}
 
 
