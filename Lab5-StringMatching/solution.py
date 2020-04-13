@@ -36,7 +36,10 @@ def align_words(string1, string2):
     """
     total_gain = 0
     align_words_rec(string1, string2, total_gain)
-    print(string1, string2)  # print resulting alignment
+
+    result1 = ''.join(result1_list)
+    result2 = ''.join(result2_list)
+    print(result1, result2)  # print resulting alignment
 
 
 def align_words_rec(string1, string2, total_gain):
@@ -91,6 +94,10 @@ def align_words_rec(string1, string2, total_gain):
 
 letters, gain_matrix, let_to_ind, queries = setup()  # read input, set up cost_matrix and queries
 align_cache = {}
+
+# inte säker på om detta ska behållas
+result1_list = []  # list of chars representing aligned 'string1'
+result2_list = []  # list of chars representing aligned 'string2'
 
 for query in queries:
     word1 = query[0]
