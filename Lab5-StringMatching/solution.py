@@ -34,8 +34,8 @@ def align_words(string1, string2):
     string2 : str
         Second string in query
     """
-    total_gain = 0
-    align_words_rec(string1, string2, total_gain)
+    init_gain = 0
+    align_words_rec(string1, string2, init_gain)
 
     result1 = ''.join(result1_list)
     result2 = ''.join(result2_list)
@@ -63,43 +63,50 @@ def align_words_rec(string1, string2, total_gain):
 
     length1 = len(string1)
     length2 = len(string2)
-    if length1 == 1 and length2 == 1:    # base cases 1
-        return gain(string1, string2)
-    elif length1 > 1 and length2 == 1:   # base case 2
-        return
-    elif length1 == 1 and length2 > 1:  # base case 3:
-        return
+    if length1 == 0 and length2 == 0:    # base cases 1
+        return total_gain
+    elif length1 > 1 and length2 == 0:   # base case 2
+        temp_gain = align_words_rec(string1[:-1], '', total_gain) - 4
+        result1_list.append(string1[-1])
+        result2_list.append('*')
+        return total_gain + temp_gain
+    elif length1 == 0 and length2 > 1:  # base case 3:
+        temp_gain = align_words_rec('', string2[:-1], total_gain) - 4
+        result1_list.append('*')
+        result2_list.append(string2[:-1])
+        return total_gain + temp_gain
     else:                                 # if both strings have length > 1
         letter1 = string1[-1]
         letter2 = string2[-1]
-        # if parameters in align_cache: do something, else: compute everything and add to cache
+
         if (string1, string2) in align_cache:
             return align_cache[(string1, string2)]
         else:
-            value1 = (gain(letter1, letter2) + align_words_rec(string1[:-1], string2[:-1], total_gain))
-            value2 =
+            value1 = align_words_rec(string1[:-1], string2[:-1], total_gain) + gain(letter1, letter2)
+            value2 = align_words_rec(string1, string2[:-1], total_gain) - 4
+            value3 = align_words_rec(string1[:-1], string2, total_gain) - 4
+            max_value = max(value1, value2, value3)  # choosing the alternative with highest gain
 
-            max_value = max(value1, value2)
             if max_value == value1:
-
+                result1_list.append(letter1)
+                result2_list.append(letter2)
             elif max_value == value2:
-
+                result1_list.append('*')
             else:
+                result2_list.append('*')
 
             align_cache[(string1, string2)] = max_value
 
-
-        #print(string1, string2)
+            return total_gain + max_value
 
 
 letters, gain_matrix, let_to_ind, queries = setup()  # read input, set up cost_matrix and queries
 align_cache = {}
 
-# inte säker på om detta ska behållas
-result1_list = []  # list of chars representing aligned 'string1'
-result2_list = []  # list of chars representing aligned 'string2'
 
 for query in queries:
+    result1_list = []  # list of chars representing aligned 'word1'
+    result2_list = []  # list of chars representing aligned 'word2'
     word1 = query[0]
     word2 = query[1]
     align_words(word1, word2)
