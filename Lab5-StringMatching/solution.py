@@ -72,10 +72,10 @@ def align_words_rec(string1, string2, result1, result2, total_gain):
         length2 = len(string2)
         letter1 = string1[-1]
         letter2 = string2[-1]
-        max_res1 = ''
-        max_res2 = ''
         if length1 == 1 and length2 == 1:    # base cases 1
-            pass
+            total_gain = gain(letter1, letter2)
+            max_res1 = letter1
+            max_res2 = letter2
         elif length1 > 1 and length2 == 1:   # base case 2
             total_gain = -4*(length1-1) + gain(string1[-1], letter2)
             max_res1 = string1
@@ -86,30 +86,28 @@ def align_words_rec(string1, string2, result1, result2, total_gain):
             max_res2 = string2
         else:                                # if both strings have length > 1
 
-            value1, res11, res12 = align_words_rec(string1[:-1], string2[:-1], result1, result2, total_gain)
-            value1 += gain(letter1, letter2)
+            gain1, res11, res12 = align_words_rec(string1[:-1], string2[:-1], result1, result2, total_gain)
+            gain1 += gain(letter1, letter2)
 
-            value2, res21, res22 = align_words_rec(string1, string2[:-1], result1, result2, total_gain)  # fel här
-            value2 -= 4  # ha kvar?
+            gain2, res21, res22 = align_words_rec(string1, string2[:-1], result1, result2, total_gain)  # fel här
+            gain2 -= 4  # ha kvar?
 
-            value3, res31, res32 = align_words_rec(string1[:-1], string2, result1, result2, total_gain)  # fel här
-            value3 -= 4  # ha kvar?
+            gain3, res31, res32 = align_words_rec(string1[:-1], string2, result1, result2, total_gain)  # fel här
+            gain3 -= 4  # ha kvar?
 
-            max_value = max(value1, value2, value3)  # choosing the alternative with highest gain
+            max_value = max(gain1, gain2, gain3)  # choosing the alternative with highest gain
 
-            if max_value == value1:
+            if max_value == gain1:
                 max_res1 = res11 + letter1
                 max_res2 = res12 + letter2
-            elif max_value == value2:
+            elif max_value == gain2:
                 max_res1 = res21 + letter1
                 max_res2 = res22 + '*'
             else:
                 max_res1 = res31 + '*'
                 max_res2 = res32 + letter2
 
-            align_cache[(string1, string2, result1, result2)] = max_value + total_gain, max_res1, max_res2
-
-            return max_value + total_gain, max_res1, max_res2
+            total_gain += max_value
 
         align_cache[(string1, string2, result1, result2)] = total_gain, max_res1, max_res2
         return total_gain, max_res1, max_res2
