@@ -63,37 +63,37 @@ def align_words_rec(string1, string2, result1, result2, total_gain):
         Total gain between 'string1' and 'string2'
     """
 
-    if (string1, string2, result1, result2, total_gain) in align_cache:
-        return align_cache[(string1, string2, result1, result2, total_gain)]
-    else:  # if we already haven't computed the value for (string1, string2)
+    # if we've already computed the value for (string1, string2, result1, result2, total_gain)
+    if (string1, string2, result1, result2) in align_cache:
+        return align_cache[(string1, string2, result1, result2)]
+    else:
 
         length1 = len(string1)
         length2 = len(string2)
+        letter1 = string1[-1]
+        letter2 = string2[-1]
         max_res1 = ''
         max_res2 = ''
-        if length1 == 0 and length2 == 0:    # base cases 1
+        if length1 == 1 and length2 == 1:    # base cases 1
             pass
-        elif length1 > 0 and length2 == 0:   # base case 2
-            temp_gain, res1, res2 = align_words_rec(string1[:-1], '', result1, result2, total_gain)
-            temp_gain -= 4
-            total_gain = temp_gain
-            max_res1 = res1 + string1[-1]
-            max_res2 = res2 + '*'
-        elif length1 == 0 and length2 > 0:  # base case 3:
-            temp_gain, res1, res2 = align_words_rec('', string2[:-1], result1, result2, total_gain)
-            temp_gain -= 4
-            total_gain = temp_gain
-            max_res1 = res1 + '*'
-            max_res2 = res2 + string2[-1]
-        else:                                 # if both strings have length > 1
-            letter1 = string1[-1]
-            letter2 = string2[-1]
+        elif length1 > 1 and length2 == 1:   # base case 2
+            total_gain = -4*(length1-1) + gain(string1[-1], letter2)
+            max_res1 = string1
+            max_res2 = '*'*(length1-1) + letter2
+        elif length1 == 1 and length2 > 1:   # base case 3:
+            total_gain = -4 * (length2 - 1) + gain(letter1, string2[-1])
+            max_res1 = '*' * (length2 - 1) + letter1
+            max_res2 = string2
+        else:                                # if both strings have length > 1
 
             value1, res11, res12 = align_words_rec(string1[:-1], string2[:-1], result1, result2, total_gain)
+            value1 += gain(letter1, letter2)
 
-            value2, res21, res22 = align_words_rec(string1, string2[:-1], result1, result2, total_gain)
+            value2, res21, res22 = align_words_rec(string1, string2[:-1], result1, result2, total_gain)  # fel här
+            value2 -= 4  # ha kvar?
 
-            value3, res31, res32 = align_words_rec(string1[:-1], string2, result1, result2, total_gain)
+            value3, res31, res32 = align_words_rec(string1[:-1], string2, result1, result2, total_gain)  # fel här
+            value3 -= 4  # ha kvar?
 
             max_value = max(value1, value2, value3)  # choosing the alternative with highest gain
 
@@ -101,17 +101,17 @@ def align_words_rec(string1, string2, result1, result2, total_gain):
                 max_res1 = res11 + letter1
                 max_res2 = res12 + letter2
             elif max_value == value2:
-                max_res1 = res21 + '*'
-                max_res2 = res22 + letter2
+                max_res1 = res21 + letter1
+                max_res2 = res22 + '*'
             else:
-                max_res1 = res31 + letter1
-                max_res2 = res32 + '*'
+                max_res1 = res31 + '*'
+                max_res2 = res32 + letter2
 
-            align_cache[(string1, string2, result1, result2, total_gain)] = max_value + total_gain, max_res1, max_res2
+            align_cache[(string1, string2, result1, result2)] = max_value + total_gain, max_res1, max_res2
 
-            return total_gain + max_value, max_res1, max_res2
+            return max_value + total_gain, max_res1, max_res2
 
-        align_cache[(string1, string2, result1, result2, total_gain)] = total_gain, max_res1, max_res2
+        align_cache[(string1, string2, result1, result2)] = total_gain, max_res1, max_res2
         return total_gain, max_res1, max_res2
 
 
