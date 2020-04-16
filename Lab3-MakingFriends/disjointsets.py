@@ -74,7 +74,7 @@ class DisjointSets(object):
         root1 = self.rootNodes[self.find(node1)]
         root2 = self.rootNodes[self.find(node2)]
 
-        if root1.height < root2.height:
+        if root1.height < root2.height: # these lines are a bit sketchy
             root1.parentNode = root2
             root2.height += 1
         elif root2.height < root1.height:
