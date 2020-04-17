@@ -1,4 +1,5 @@
 from setup import setup
+from math import inf
 
 
 """Solution for lab 5, dynamic programming"""
@@ -68,10 +69,10 @@ def align_words_rec(string1, string2, result1, result2, total_gain):
         return align_cache[(string1, string2, result1, result2)]
     else:
 
-        length1 = len(string1)
-        length2 = len(string2)
-        letter1 = string1[-1]
-        letter2 = string2[-1]
+        length1 = len(string1)  # length of 'string1'
+        length2 = len(string2)  # length of 'string2'
+        letter1 = string1[-1]   # last letter in 'string1'
+        letter2 = string2[-1]   # last letter in 'string2'
         if length1 == 1 and length2 == 1:    # base cases 1
             total_gain = gain(letter1, letter2)
             max_res1 = letter1
@@ -89,25 +90,36 @@ def align_words_rec(string1, string2, result1, result2, total_gain):
             gain1, res11, res12 = align_words_rec(string1[:-1], string2[:-1], result1, result2, total_gain)
             gain1 += gain(letter1, letter2)
 
-            gain2, res21, res22 = align_words_rec(string1, string2[:-1], result1, result2, total_gain)  # fel här
-            gain2 -= 4
+            substring1 = ''
+            substring2 = ''
+            gain2 = -inf
 
-            gain3, res31, res32 = align_words_rec(string1[:-1], string2, result1, result2, total_gain)  # fel här
-            gain3 -= 4
+            if length1 > length2:
+                substring1 = string1[:-2]
+                substring2 = string2[:-1]
+                gain2, res21, res22 = align_words_rec(substring1, substring2, result1, result2, total_gain)
+                gain2 += gain(letter1, letter2) - 4
+            elif length1 < length2:
+                substring1 = string1[:-1]
+                substring2 = string2[:-2]
+                gain2, res21, res22 = align_words_rec(substring1, substring2, result1, result2, total_gain)
+                gain2 += gain(letter1, letter2) - 4
 
-            max_value = max(gain1, gain2, gain3)  # choosing the alternative with highest gain
+            max_value = max(gain1, gain2)  # choosing the alternative with highest gain
 
             if max_value == gain1:
                 max_res1 = res11 + letter1
                 max_res2 = res12 + letter2
-            elif max_value == gain2:
-                max_res1 = res21
-                max_res2 = res22 + letter2
+            # elif max_value == gain2:
+            #    max_res1 = res21 + string1[-2:]
+            #    max_res2 = res22 + '*' + letter2
             else:
-                # max_res1 = res31 + '*'
-                max_res1 = res31 + letter1
-                # max_res2 = res32 + letter2
-                max_res2 = res32
+                if length1 > length2:
+                    max_res1 = res21 + string1[-2:]
+                    max_res2 = res22 + '*' + letter2
+                else:
+                    max_res1 = res21 + '*' + letter1
+                    max_res2 = res22 + string2[-2:]
 
             total_gain += max_value
 
