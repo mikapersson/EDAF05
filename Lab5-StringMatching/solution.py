@@ -77,7 +77,7 @@ def align_words_rec(string1, string2, result1, result2, total_gain):
             max_res1 = letter1
             max_res2 = letter2
         elif length1 > 1 and length2 == 1:   # base case 2
-            total_gain = -4*(length1-1) + gain(string1[-1], letter2)
+            total_gain = -4*(length1-1) + gain(letter1, letter2)
             max_res1 = string1
             max_res2 = '*'*(length1-1) + letter2
         elif length1 == 1 and length2 > 1:   # base case 3:
@@ -90,10 +90,10 @@ def align_words_rec(string1, string2, result1, result2, total_gain):
             gain1 += gain(letter1, letter2)
 
             gain2, res21, res22 = align_words_rec(string1, string2[:-1], result1, result2, total_gain)  # fel här
-            gain2 -= 4  # ha kvar?
+            gain2 -= 4
 
             gain3, res31, res32 = align_words_rec(string1[:-1], string2, result1, result2, total_gain)  # fel här
-            gain3 -= 4  # ha kvar?
+            gain3 -= 4
 
             max_value = max(gain1, gain2, gain3)  # choosing the alternative with highest gain
 
@@ -101,11 +101,13 @@ def align_words_rec(string1, string2, result1, result2, total_gain):
                 max_res1 = res11 + letter1
                 max_res2 = res12 + letter2
             elif max_value == gain2:
-                max_res1 = res21 + letter1
-                max_res2 = res22 + '*'
+                max_res1 = res21
+                max_res2 = res22 + letter2
             else:
-                max_res1 = res31 + '*'
-                max_res2 = res32 + letter2
+                # max_res1 = res31 + '*'
+                max_res1 = res31 + letter1
+                # max_res2 = res32 + letter2
+                max_res2 = res32
 
             total_gain += max_value
 
