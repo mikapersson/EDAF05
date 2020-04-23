@@ -16,7 +16,7 @@ def shortest_distance(point_list):
     """
     points_x = point_list
     points_y = point_list.copy()
-    points_x.sort(key=lambda point: point.x)  # sort points according to x-coordinate
+    points_x.sort(key=lambda point: point.x)  # sort points according to x-coordinate, O(nlogn)
     points_y.sort(key=lambda point: point.y)  # sort points according to y-coordinate
     shortest_dist = shortest_rec(points_x, points_y, len(point_list))
     print("{:.6f}".format(shortest_dist))
@@ -43,14 +43,14 @@ def shortest_rec(p_x, p_y, size):
     middle_point = p_x[cut]
 
     left_x = p_x[:cut]  # split p_x in half
-    left_y = []  # this is filled below
+    left_y = []         # this is filled below
     right_x = p_x[cut:]
     right_y = []
 
-    left_side = set(left_x)  # for looking up points efficiently
-    for point in p_y:  # split p_y in half
-        if point in left_side:
-            left_y.append(point)
+    left_side = set(left_x)       # for looking up points efficiently
+    for point in p_y:             # split p_y in half, O(n)
+        if point in left_side:    # O(1)
+            left_y.append(point)  # O(1)
         else:
             right_y.append(point)
 
@@ -58,15 +58,15 @@ def shortest_rec(p_x, p_y, size):
     right_distance = shortest_rec(right_x, right_y, size - cut)  # -||- right side
     delta = min(left_distance, right_distance)
 
-    interval_points = []  # points that have an x-coordinate within the distance 'delta' of the 'middle_point'
-    for y_point in p_y:
+    interval_points = []     # points that have an x-coordinate within the distance 'delta' of the 'middle_point'
+    for y_point in p_y:      # O(n)
         inside_interval = abs(y_point.x - middle_point.x) < delta
         if inside_interval:  # y_point is inside the middle interval of width 2*delta
-            interval_points.append(y_point)
+            interval_points.append(y_point)  # O(1)
 
     interval_length = len(interval_points)
     for index1, point1 in enumerate(interval_points):  # brute force, check closest 15 points in y-direction
-        last_index = 15 + index1 # index for the last element we are checking the distance to
+        last_index = 15 + index1  # index for the last element we are checking the distance to
         if last_index > interval_length:
             last_index = interval_length
 
