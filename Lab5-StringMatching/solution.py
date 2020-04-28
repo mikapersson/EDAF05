@@ -47,7 +47,7 @@ def align_words(string1, string2):
 
 def align_words_rec(string1, string2, result1, result2, total_gain):
     """
-    Recursive help function for 'align_words' function
+    Recursive help function for 'align_words' function (can be shortened + use help functions)
 
     Parameters
     ----------
@@ -80,37 +80,75 @@ def align_words_rec(string1, string2, result1, result2, total_gain):
 
         if length1 == 1 and length2 == 1:    # base cases 1
             total_gain = gain(letter1, letter2)
-            max_res1 = letter1
-            max_res2 = letter2
+            string1_result = letter1
+            string2_result = letter2
         elif length1 > 1 and length2 == 1:   # base case 2
             total_gain = -4*(length1-1) + gain(letter1, letter2)
 
-            max_res1 = string1
-            max_res2 = '*'*(length1-1) + letter2  # check if we add the star before of after
+            string1_result = string1
+            string2_result = '*'*(length1-1) + letter2  # check if we add the star before of after
         elif length1 == 1 and length2 > 1:   # base case 3:
             total_gain = -4 * (length2 - 1) + gain(letter1, letter2)
-            max_res1 = '*' * (length2 - 1) + letter1
-            max_res2 = string2
+            string1_result = '*' * (length2 - 1) + letter1
+            string2_result = string2
         else:                                # if both strings have length > 1
 
             gain1, res11, res12 = align_words_rec(string1[:-1], string2[:-1], result1, result2, total_gain)
             gain1 += gain(letter1, letter2)
 
-            substring1 = ''
-            substring2 = ''
+            right = True  # for determining if we add the '*' on the right or left side of letter1 (or letter2)
             gain2 = -inf
 
-            if length1 > length2:
-                substring1 = string1[:-2]
-                substring2 = string2[:-1]
-                # add two cases here to examine adding a star before or after letter2
-                gain2, res21, res22 = align_words_rec(substring1, substring2, result1, result2, total_gain)
-                gain2 += gain(letter1, letter2) - 4
-            elif length1 < length2:
-                substring1 = string1[:-1]
-                substring2 = string2[:-2]
-                gain2, res21, res22 = align_words_rec(substring1, substring2, result1, result2, total_gain)
-                gain2 += gain(letter1, letter2) - 4
+            if length1 > length2:  # if string1 is longer than string2
+                substring1_right = string1[:-1]
+                substring2_right = string2  # just from clarification
+
+                # ADDING TO THE RIGHT SIDE OF letter2
+                gain2_right, res21_right, res22_right = align_words_rec(substring1_right, substring2_right, result1,
+                                                                        result2, total_gain)
+                gain2_right -= 4
+
+                # ADDING TO THE LEFT OF letter2
+                substring1_left = string1[:-2]
+                substring2_left = string2[:-1]
+                gain2_left, res21_left, res22_left = align_words_rec(substring1_left, substring2_left, result1,
+                                                                     result2, total_gain)
+                gain2_left += gain(letter1, letter2) - 4
+
+                if gain2_right > gain2_left:
+                    gain2 = gain2_right
+                    res21 = res21_right
+                    res22 = res22_right
+                else:
+                    gain2 = gain2_left
+                    res21 = res21_left
+                    res22 = res22_left
+                    right = False
+            elif length1 < length2:  # if string1 is shorter than string2
+                substring1_right = string1  # just from clarification
+                substring2_right = string2[:-1]
+
+                # ADDING TO THE RIGHT SIDE OF letter1
+                gain2_right, res21_right, res22_right = align_words_rec(substring1_right, substring2_right, result1,
+                                                                        result2, total_gain)
+                gain2_right -= 4
+
+                # ADDING TO THE LEFT OF letter1
+                substring1_left = string1[:-1]
+                substring2_left = string2[:-2]
+                gain2_left, res21_left, res22_left = align_words_rec(substring1_left, substring2_left, result1,
+                                                                     result2, total_gain)
+                gain2_left += gain(letter1, letter2) - 4
+
+                if gain2_right > gain2_left:
+                    gain2 = gain2_right
+                    res21 = res21_right
+                    res22 = res22_right
+                else:
+                    gain2 = gain2_left
+                    res21 = res21_left
+                    res22 = res22_left
+                    right = False
 
             max_value = max(gain1, gain2)  # choosing the alternative with highest gain
 
@@ -119,16 +157,27 @@ def align_words_rec(string1, string2, result1, result2, total_gain):
                 max_res2 = res12 + letter2 
             else:
                 if length1 > length2:
-                    max_res1 = res21 + string1[-2:]
-                    max_res2 = res22 + '*' + letter2
+                    if right:
+                        max_res1 = res21 + letter1
+                        max_res2 = res22 + letter2 + '*'
+                    else:
+                        max_res1 = res21 + letter1
+                        max_res2 = res22 + '*' + letter2
                 else:
-                    max_res1 = res21 + '*' + letter1
-                    max_res2 = res22 + string2[-2:]
+                    if right:
+                        max_res1 = res21 + letter1 + '*'
+                        max_res2 = res22 + letter2
+                    else:
+                        max_res1 = res21 + letter1
+                        max_res2 = res22 + '*' + letter2
+
+            string1_result = max_res1
+            string2_result = max_res2
 
             total_gain += max_value
 
-        align_cache[(string1, string2, result1, result2)] = total_gain, max_res1, max_res2
-        return total_gain, max_res1, max_res2
+        align_cache[(string1, string2, result1, result2)] = total_gain, string1_result, string2_result
+        return total_gain, string1_result, string2_result
 
 
 gain_matrix, let_to_ind, queries = setup()  # read input, set up cost_matrix and queries
