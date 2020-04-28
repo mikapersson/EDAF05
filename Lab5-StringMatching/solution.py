@@ -14,7 +14,7 @@ def gain(let1, let2):
     let1 : str
         First letter
     let2 : str
-
+        Second Letter
     Returns
     -------
     int
@@ -38,7 +38,7 @@ def align_words(string1, string2):
     init_gain = 0
     res1 = ''
     res2 = ''
-    tot_gain, res1, res2 = align_words_rec(string1, string2, res1, res2, init_gain)  # BEHÖVER VI VERKLIGEN res1, res2?
+    tot_gain, res1, res2 = align_words_rec(string1, string2, res1, res2, init_gain)
 
     # result1 = ''.join(result1_list)
     # result2 = ''.join(result2_list)
@@ -55,6 +55,10 @@ def align_words_rec(string1, string2, result1, result2, total_gain):
         First string as in 'align_words'
     string2 : str
         Second string as in 'align_words'
+    result1 : str
+        Result of the first word in the current query
+    result2 : str
+        Result of the second word in the current query
     total_gain : int
         Current total gain (from before, not 'string1' and 'string2'
 
@@ -73,16 +77,18 @@ def align_words_rec(string1, string2, result1, result2, total_gain):
         length2 = len(string2)  # length of 'string2'
         letter1 = string1[-1]   # last letter in 'string1'
         letter2 = string2[-1]   # last letter in 'string2'
+
         if length1 == 1 and length2 == 1:    # base cases 1
             total_gain = gain(letter1, letter2)
             max_res1 = letter1
             max_res2 = letter2
         elif length1 > 1 and length2 == 1:   # base case 2
             total_gain = -4*(length1-1) + gain(letter1, letter2)
+
             max_res1 = string1
-            max_res2 = '*'*(length1-1) + letter2
+            max_res2 = '*'*(length1-1) + letter2  # check if we add the star before of after
         elif length1 == 1 and length2 > 1:   # base case 3:
-            total_gain = -4 * (length2 - 1) + gain(letter1, string2[-1])
+            total_gain = -4 * (length2 - 1) + gain(letter1, letter2)
             max_res1 = '*' * (length2 - 1) + letter1
             max_res2 = string2
         else:                                # if both strings have length > 1
@@ -97,6 +103,7 @@ def align_words_rec(string1, string2, result1, result2, total_gain):
             if length1 > length2:
                 substring1 = string1[:-2]
                 substring2 = string2[:-1]
+                # add two cases here to examine adding a star before or after letter2
                 gain2, res21, res22 = align_words_rec(substring1, substring2, result1, result2, total_gain)
                 gain2 += gain(letter1, letter2) - 4
             elif length1 < length2:
@@ -109,10 +116,7 @@ def align_words_rec(string1, string2, result1, result2, total_gain):
 
             if max_value == gain1:
                 max_res1 = res11 + letter1
-                max_res2 = res12 + letter2
-            # elif max_value == gain2:
-            #    max_res1 = res21 + string1[-2:]
-            #    max_res2 = res22 + '*' + letter2
+                max_res2 = res12 + letter2 
             else:
                 if length1 > length2:
                     max_res1 = res21 + string1[-2:]
@@ -132,8 +136,6 @@ align_cache = {}
 
 
 for query in queries:
-    # result1_list = []  # list of chars representing aligned 'word1'
-    # result2_list = []  # list of chars representing aligned 'word2'
     word1 = query[0]
     word2 = query[1]
     align_words(word1, word2)
