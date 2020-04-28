@@ -157,19 +157,19 @@ def align_words_rec(string1, string2, result1, result2, total_gain):
                 max_res2 = res12 + letter2 
             else:
                 if length1 > length2:
-                    if right:
+                    if right:  # if the '*' is appended to the right of letter2
                         max_res1 = res21 + letter1
-                        max_res2 = res22 + letter2 + '*'
-                    else:
+                        max_res2 = res22 + '*'
+                    else:      # if the '*' is appended to the left of letter2
                         max_res1 = res21 + letter1
                         max_res2 = res22 + '*' + letter2
                 else:
-                    if right:
-                        max_res1 = res21 + letter1 + '*'
+                    if right:  # if the '*' is appended to the right of letter1
+                        max_res1 = res21 + '*'
                         max_res2 = res22 + letter2
-                    else:
-                        max_res1 = res21 + letter1
-                        max_res2 = res22 + '*' + letter2
+                    else:      # if the '*' is appended to the left of letter1
+                        max_res1 = res21 + '*' + letter1
+                        max_res2 = res22 + letter2
 
             string1_result = max_res1
             string2_result = max_res2
