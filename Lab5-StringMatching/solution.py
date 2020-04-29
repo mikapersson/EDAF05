@@ -76,18 +76,16 @@ def align_words_rec(string1, string2, result1, result2, total_gain):
         length1 = len(string1)
         length2 = len(string2)
 
-        if length1 == 0 and length2 == 0:
+        if length1 == 0 and length2 == 0:   # base case 1
             total_gain = 0
             string1_result = ''
             string2_result = ''
-        elif length1 > 0 and length2 == 0:
-            letter1 = string1[-1]
+        elif length1 > 0 and length2 == 0:  # base case 2
             total_gain = -4 * length1
 
             string1_result = string1
             string2_result = '*' * length1
-        elif length1 == 0 and length2 > 0:
-            letter2 = string2[-1]
+        elif length1 == 0 and length2 > 0:  # base case 3
             total_gain = -4 * length2
 
             string1_result = '*' * length2
@@ -96,8 +94,33 @@ def align_words_rec(string1, string2, result1, result2, total_gain):
             letter1 = string1[-1]
             letter2 = string2[-1]
 
+            # no '*' added
             gain1, res11, res12 = align_words_rec(string1[:-1], string2[:-1], result1, result2, total_gain)
             gain1 += gain(letter1, letter2)
+
+            # '*' added after letter1
+            gain2, res21, res22 = align_words_rec(string1, string2[:-1], result1, result2, total_gain)
+            gain2 -= 4
+
+            # '*' added after letter2
+            gain3, res31, res32 = align_words_rec(string1[:-1], string2, result1, result2, total_gain)
+            gain3 -= 4
+
+            max_gain = max(gain1, gain2, gain3)
+
+            if max_gain == gain1:
+                max_res1 = res11 + letter1
+                max_res2 = res12 + letter2
+            else:
+                if max_gain == gain2:
+                    max_res1 = res21 + '*'
+                    max_res2 = res22 + letter2
+                elif max_gain == gain3:
+                    max_res1 = res31 + letter1
+                    max_res2 = res32 + '*'
+
+            string1_result = max_res1
+            string2_result = max_res2
 
         align_cache[(string1, string2, result1, result2)] = total_gain, string1_result, string2_result
         return total_gain, string1_result, string2_result
