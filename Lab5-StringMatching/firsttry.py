@@ -2,7 +2,7 @@ from setup import setup
 from math import inf
 
 
-"""Solution for lab 5, dynamic programming"""
+"""First try of solving lab 5, dynamic programming"""
 
 
 def gain(let1, let2):
@@ -100,10 +100,10 @@ def align_words_rec(string1, string2, result1, result2, total_gain):
             gain2 = -inf
 
             if length1 > length2:  # if string1 is longer than string2
-                substring1_right = string1[:-1]
-                substring2_right = string2  # just from clarification
 
                 # ADDING TO THE RIGHT SIDE OF letter2
+                substring1_right = string1[:-1]
+                substring2_right = string2  # just from clarification
                 gain2_right, res21_right, res22_right = align_words_rec(substring1_right, substring2_right, result1,
                                                                         result2, total_gain)
                 gain2_right -= 4

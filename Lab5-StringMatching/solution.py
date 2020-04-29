@@ -75,24 +75,24 @@ def align_words_rec(string1, string2, result1, result2, total_gain):
 
         length1 = len(string1)
         length2 = len(string2)
+        letter1 = string1[-1]
+        letter2 = string2[-1]
 
-        if length1 == 0 and length2 == 0:   # base case 1
+        if length1 == 1 and length2 == 1:   # base case 1
             total_gain = 0
-            string1_result = ''
-            string2_result = ''
-        elif length1 > 0 and length2 == 0:  # base case 2
+            string1_result = letter1
+            string2_result = letter2
+        elif length1 > 1 and length2 == 1:  # base case 2
             total_gain = -4 * length1
 
             string1_result = string1
             string2_result = '*' * length1
-        elif length1 == 0 and length2 > 0:  # base case 3
+        elif length1 == 1 and length2 > 1:  # base case 3
             total_gain = -4 * length2
 
             string1_result = '*' * length2
             string2_result = string2
         else:
-            letter1 = string1[-1]
-            letter2 = string2[-1]
 
             # no '*' added
             gain1, res11, res12 = align_words_rec(string1[:-1], string2[:-1], result1, result2, total_gain)
