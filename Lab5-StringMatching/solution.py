@@ -64,10 +64,10 @@ def align_words_rec(pos1, pos2):  # COMPLEXITY?
             position = 0
             max_gain = 0
         elif pos1 > -1 and pos2 == -1:  # base case 2
-            position = 1
+            position = 2
             max_gain = -4 * (pos1+1)
         elif pos1 == -1 and pos2 > -1:  # base case 3
-            position = 2
+            position = 1
             max_gain = -4 * (pos2+1)
         else:
 
@@ -117,10 +117,12 @@ def backtrack():  # COMPLEXITY?
     pos1 = len(word1)-1
     pos2 = len(word2)-1
 
-    while pos1 >= 0 and pos2 >= 0:
-        letter1 = word1[pos1]
-        letter2 = word2[pos2]
+    while pos1 >= 0 or pos2 >= 0:
+
         ignore, case = align_cache[pos1, pos2]
+
+        letter1 = word1[pos1] if pos1 >= 0 else '*'
+        letter2 = word2[pos2] if pos2 >= 0 else '*'
 
         if case == 0:
             aligned1 = letter1 + aligned1
