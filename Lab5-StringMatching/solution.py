@@ -1,7 +1,8 @@
 from setup import setup
+import sys
 from math import inf
 
-
+sys.setrecursionlimit(10**9)
 """First try of solving lab 5, dynamic programming"""
 
 
@@ -39,7 +40,7 @@ def align_words():
     print(aligned1 + " " + aligned2)
 
 
-def align_words_rec(pos1, pos2):  # COMPLEXITY?
+def align_words_rec(pos1, pos2):  # O(n^2), n: number of letters
     """
     Recursive help function for 'align_words' function,
     actually fills out 'align_cache'
@@ -99,7 +100,7 @@ def align_words_rec(pos1, pos2):  # COMPLEXITY?
         return max_gain, position
 
 
-def backtrack():  # COMPLEXITY?
+def backtrack():  # O(n)
     """
     Finds the optimal alignment of 'word1' and 'word2' with respect to 'align_cache'.
 
