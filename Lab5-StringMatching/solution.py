@@ -36,7 +36,7 @@ def align_words():
 
     align_words_rec(len(word1)-1, len(word2)-1)
     aligned1, aligned2 = backtrack()
-    print(aligned1, aligned2)
+    print(aligned1 + " " + aligned2)
 
 
 def align_words_rec(pos1, pos2):  # COMPLEXITY?
