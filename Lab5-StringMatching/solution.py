@@ -23,42 +23,6 @@ def gain(let1, let2):
     return int(gain_matrix[let_to_ind[let1]][let_to_ind[let2]])
 
 
-def backtrack():  # COMPLEXITY?
-    """
-    Finds the optimal alignment of 'word1' and 'word2' with respect to 'align_cache'.
-
-    Returns
-    -------
-    str : aligned1
-        'word1' aligned
-    str : aligned2
-        'word2' aligned
-    """
-
-    aligned1 = ""
-    aligned2 = ""
-
-    pos1 = len(word1)-1
-    pos2 = len(word2)-1
-
-    while pos1 >= 0 and pos2 >= 0:
-        letter1 = word1[pos1]
-        letter2 = word2[pos2]
-        ignore, case = align_cache([pos1, pos2])
-
-        if case == 0:
-            aligned1 = letter1 + aligned1
-            aligned2 = letter2 + aligned2
-            pos1 -= 1
-            pos2 -= 1
-        elif case == 1:
-            aligned1 = '*' + aligned1
-            pos2 -= 1
-        else:
-            aligned2 = letter2 + aligned2
-            pos1 -= 1
-
-    return aligned1, aligned2
 
 
 def align_words():
@@ -92,7 +56,7 @@ def align_words_rec(pos1, pos2):  # COMPLEXITY?
 
     # if we've already computed the value for (pos1, pos2)
     if (pos1, pos2) in align_cache:
-        return align_cache[(pos1, pos2)]
+        return align_cache[pos1, pos2]
     else:
         position = None
 
@@ -101,10 +65,10 @@ def align_words_rec(pos1, pos2):  # COMPLEXITY?
             max_gain = 0
         elif pos1 > -1 and pos2 == -1:  # base case 2
             position = 1
-            max_gain = -4 * pos1
+            max_gain = -4 * (pos1+1)
         elif pos1 == -1 and pos2 > -1:  # base case 3
             position = 2
-            max_gain = -4 * pos2
+            max_gain = -4 * (pos2+1)
         else:
 
             letter1 = word1[pos1]
@@ -125,14 +89,54 @@ def align_words_rec(pos1, pos2):  # COMPLEXITY?
             max_gain = max(gain1, gain2, gain3)
 
             if max_gain == gain1:
-                position = position0
+                position = 0
             elif max_gain == gain2:
-                position = position1
+                position = 1
             else:
-                position = position2
+                position = 2
 
         align_cache[(pos1, pos2)] = max_gain, position
         return max_gain, position
+
+
+def backtrack():  # COMPLEXITY?
+    """
+    Finds the optimal alignment of 'word1' and 'word2' with respect to 'align_cache'.
+
+    Returns
+    -------
+    str : aligned1
+        'word1' aligned
+    str : aligned2
+        'word2' aligned
+    """
+
+    aligned1 = ""
+    aligned2 = ""
+
+    pos1 = len(word1)-1
+    pos2 = len(word2)-1
+
+    while pos1 >= 0 and pos2 >= 0:
+        letter1 = word1[pos1]
+        letter2 = word2[pos2]
+        ignore, case = align_cache[pos1, pos2]
+
+        if case == 0:
+            aligned1 = letter1 + aligned1
+            aligned2 = letter2 + aligned2
+            pos1 -= 1
+            pos2 -= 1
+        elif case == 1:
+            aligned1 = '*' + aligned1
+            aligned2 = letter2 + aligned2
+            pos2 -= 1
+        else:
+            aligned1 = letter1 + aligned1
+            aligned2 = '*' + aligned2
+            pos1 -= 1
+
+    return aligned1, aligned2
 
 
 gain_matrix, let_to_ind, queries = setup()  # read input, set up cost_matrix and queries
