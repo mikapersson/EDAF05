@@ -1,4 +1,4 @@
-from read_data import read_create
+import sys
 
 """ Solution to lab 6 """
 
@@ -21,6 +21,6 @@ N, M, C, P = list(map(int, sys.stdin.readline().replace('\n', '').split(' ')))  
 
 '''
 FRÅGOR
-- plocka inte bort kant! lägg till kant istället, börja bakifrån!
+- plocka inte bort kant! lägg till kant istället, börja bakifrån (av P)!
 -> eftersom vi gör detta kommer s och t ändras? ska vi då ha koll på vad de aktuella s och t är?
 '''
