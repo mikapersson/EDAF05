@@ -3,6 +3,7 @@ from read_create import read_create
 from edge import *
 from find_path import find_path
 from node import Node
+from copy import deepcopy
 
 """ Solution to lab 6 """
 
@@ -22,19 +23,30 @@ max_flow = 0
 def ford_fulkerson(G, s, t):
     """Finds the maximal flow from s to t in G"""
 
+    tot_flow = 0
     # create residual graph, hur? en kopia av G? kanske...  hur mycket flöde kan jag ha bakåt?
-    source_node = G[s]
-    if t in G:
-        sink_node = G[t]
+    G_residual = deepcopy(G)
+
+    if s in G_residual:
+        source_node = G_residual[s]
     else:
         return 0
 
-    path_exists, path_edges, delta = find_path(G, source_node, sink_node)
-    while path_exists:  # while there is a path that isn't clogged up
+    if t in G_residual:
+        sink_node = G_residual[t]
+    else:
+        return 0
 
-        break
+    path_exists, path_edges, delta = find_path(G_residual, source_node, sink_node)
+    while path_exists:  # while there is a path that isn't clogged up SOMETHING WRONG HERE
+        tot_flow += delta
 
-    return 0
+        for edge in path_edges:
+            edge.decrease_capacity(delta)
+        # fix edges in G_residual (decrease capacities on the current path and add backward edges)
+        path_exists, path_edges, delta = find_path(G_residual, source_node, sink_node)
+
+    return tot_flow
 
 
 # SOLUTION
@@ -70,5 +82,7 @@ print(len(P_edges), max_flow)  # len(P_edges) contain how many routes we didn't 
 
 '''
 FRÅGOR
-- vad vill jag att BFS på rad 25 ska returnera? -> (bool om man hittade path, lista på kanter, delta)?
+- eftersom vi har en oriktad graf, kommer vi få dubbla par kanter/nod i residualgrafen då?
+- kommer vi ens behöva kanternas flöden eller en residualgraf?
+  -> kan man inte bara minska kapaciteten i residualgrafen eftersom och alltid ha 0 flöde?
 '''

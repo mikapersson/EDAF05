@@ -26,7 +26,8 @@ def find_path(G, s, t):  # O(m)
             is_visited = next_city.visited == 1
 
             if not (temp_edge.is_full() or is_visited):    # if the current edge is not filled
-                temp_delta = temp_edge.delta
+                # temp_delta = temp_edge.delta
+                temp_delta = temp_edge.capacity
                 if delta > temp_delta:     # in order to find the least delta
                     delta = temp_delta
 
