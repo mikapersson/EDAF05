@@ -53,9 +53,10 @@ def ford_fulkerson(G, s, t):
 
 
 # SOLUTION
+iterations = 0
 while max_flow < C:
     """We construct the graph G 'backwards' with respect to P_list until we are above C capacity"""
-
+    iterations += 1
     new_edge_index = P_edges.pop()  # O(1)
     new_edge = edges[new_edge_index]
 
@@ -78,8 +79,11 @@ while max_flow < C:
         graph[to_index].edges.append(new_edge.reverse())
 
     max_flow = ford_fulkerson(graph, source, sink)  # find maximal flow with Ford-Fulkersons algorithm
+    # print("iteration", iterations)
+    # print(max_flow)
 
 
+# print("iterations:", iterations)
 print(len(P_edges), max_flow)  # len(P_edges) contain how many routes we didn't have to use (#removed edges)
 
 
@@ -88,4 +92,6 @@ FRÅGOR
 - eftersom vi har en oriktad graf, kommer vi få dubbla par kanter/nod i residualgrafen då?
 - kommer vi ens behöva kanternas flöden eller en residualgraf?
   -> kan man inte bara minska kapaciteten i residualgrafen eftersom och alltid ha 0 flöde?
+  
+- det är något som inte fungerar
 '''
