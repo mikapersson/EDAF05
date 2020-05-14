@@ -23,12 +23,15 @@ def ford_fulkerson(G, s, t):
     """Finds the maximal flow from s to t in G"""
 
     # create residual graph, hur? en kopia av G? kanske...  hur mycket flöde kan jag ha bakåt?
+    source_node = G[s]
+    if t in G:
+        sink_node = G[t]
+    else:
+        return 0
 
-    path_exists, path_edges, delta = find_path(G, s, t)
-    
-    for i in range(2):  # path_exists:  # while there is a path that isn't clogged up
-        for edge in path_edges:
-            edge.increment_flow(delta)
+    path_exists, path_edges, delta = find_path(G, source_node, sink_node)
+    while path_exists:  # while there is a path that isn't clogged up
+        break
 
     return 0
 
@@ -44,14 +47,14 @@ while max_flow < C:
     to_index = new_edge.destination2
 
     # rimligt?
-    if new_edge.destination1 not in graph:
+    if from_index not in graph:
         new_city = Node(from_index)
         new_city.edges.append(new_edge)
         graph[from_index] = new_city
     else:
         graph[from_index].edges.append(new_edge)
 
-    if new_edge.destination2 not in graph:
+    if to_index not in graph:
         new_city = Node(to_index)
         new_city.edges.append(new_edge.reverse())
         graph[to_index] = new_city  # undirected graph
