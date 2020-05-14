@@ -16,7 +16,7 @@ def find_path(G, s, t):  # O(m)
     queue = Queue(maxsize=len(G))
     queue.put(s)
 
-    while queue.qsize() > 0:               # while there is a potential path from s to t
+    while queue.qsize() > 0 and not path_exists:               # while there is a potential path from s to t
         temp_city = queue.get()            # the first city in the queue
         temp_city.visited = 1
 
@@ -34,7 +34,7 @@ def find_path(G, s, t):  # O(m)
                 queue.put(next_city)
 
                 next_city.previous = temp_city
-                path_edges.append(temp_edge)
+                path_edges.append(temp_edge)  # ADD BACKWARDS TOO?
 
                 if next_city == t:  # if we've reach the end station (t)
                     path_exists = True

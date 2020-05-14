@@ -24,7 +24,6 @@ def ford_fulkerson(G, s, t):
     """Finds the maximal flow from s to t in G"""
 
     tot_flow = 0
-    # create residual graph, hur? en kopia av G? kanske...  hur mycket flöde kan jag ha bakåt?
     G_residual = deepcopy(G)
 
     if s in G_residual:

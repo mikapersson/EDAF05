@@ -21,6 +21,7 @@ class Edge:
 
     def decrease_capacity(self, decr):
         self.capacity -= decr
+        # self.delta -= decr  USE THIS??
 
     def print_edge(self):
         output = "Edge: from " + str(self.destination1) + " to " + str(self.destination2) \
