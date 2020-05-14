@@ -15,9 +15,12 @@ class Edge:
         self.flow = new_flow
         self.delta = self.capacity - new_flow
 
-    def increment_flow(self, delta):
-        self.flow += delta
-        self.delta -= delta
+    def increment_flow(self, incr):
+        self.flow += incr
+        self.delta -= incr
+
+    def decrease_capacity(self, decr):
+        self.capacity -= decr
 
     def print_edge(self):
         output = "Edge: from " + str(self.destination1) + " to " + str(self.destination2) \
