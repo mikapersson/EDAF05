@@ -11,7 +11,6 @@ def backtrack(G, s, t, log):
         temp_path, temp_delta = log[temp_node]
         if delta > temp_delta:
             delta = temp_delta
-
         path_edges.append(temp_path)
         temp_node = temp_node.previous
 
@@ -31,21 +30,20 @@ def find_path(G, s, t):  # O(m)
     delta = 0
 
     s.visited = 1
-    queue = Queue(maxsize=len(G))
+    queue = Queue(maxsize=math.inf)
     queue.put(s)
 
+    # debug_counter = 0
     while queue.qsize() > 0 and not path_exists:               # while there is a potential path from s to t
         temp_city = queue.get()            # the first city in the queue
         temp_city.visited = 1
-
+        # print("new city")
         for temp_edge in temp_city.edges:  # examine all edges from temp_city
             next_city_index = temp_edge.destination2  # find the next city
             next_city = G[next_city_index]
             is_visited = next_city.visited == 1
 
             if not (temp_edge.is_full() or is_visited):    # if the current edge is not filled
-
-                # PROBLEM WITH DELTA, gör en dic som håller koll på deltas och path_edges för hjälp vid backtracking
 
                 # temp_delta = temp_edge.delta
                 temp_delta = temp_edge.capacity
@@ -62,6 +60,9 @@ def find_path(G, s, t):  # O(m)
                 if next_city == t:  # if we've reach the end station (t)
                     path_exists = True
                     path_edges, delta = backtrack(G, s, t, log)
+
+                    # debug_counter += 1
+                    # print(debug_counter)
                     break
 
     return path_exists, path_edges, delta

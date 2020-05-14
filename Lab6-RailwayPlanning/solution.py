@@ -26,25 +26,28 @@ def ford_fulkerson(G, s, t):
     tot_flow = 0
     G_residual = deepcopy(G)
 
-    if s in G_residual:
+    if s in G_residual:  # if we've added the source node to the graph
         source_node = G_residual[s]
     else:
         return 0
 
-    if t in G_residual:
+    if t in G_residual:  # if we've added the sink node to the graph
         sink_node = G_residual[t]
     else:
         return 0
 
+    # debug_counter = 0
     path_exists, path_edges, delta = find_path(G_residual, source_node, sink_node)
     while path_exists:  # while there is a path that isn't clogged up SOMETHING WRONG HERE
         tot_flow += delta
-        # print("new path")
+        # print(debug_counter)
 
         for edge in path_edges:
             edge.decrease_capacity(delta)
         # fix edges in G_residual (decrease capacities on the current path and add backward edges)
         path_exists, path_edges, delta = find_path(G_residual, source_node, sink_node)
+
+        # debug_counter += 1
 
     return tot_flow
 
