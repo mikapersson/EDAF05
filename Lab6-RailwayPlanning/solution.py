@@ -22,5 +22,6 @@ N, M, C, P = list(map(int, sys.stdin.readline().replace('\n', '').split(' ')))  
 '''
 FRÅGOR
 - plocka inte bort kant! lägg till kant istället, börja bakifrån (av P)!
--> eftersom vi gör detta kommer s och t ändras? ska vi då ha koll på vad de aktuella s och t är?
+-> eftersom vi gör detta kommer s och t ändras? ska vi då ha koll på vad de aktuella s och t är? 
+    - nej? s=0, t=N-1
 '''
