@@ -39,6 +39,7 @@ def ford_fulkerson(G, s, t):
     path_exists, path_edges, delta = find_path(G_residual, source_node, sink_node)
     while path_exists:  # while there is a path that isn't clogged up SOMETHING WRONG HERE
         tot_flow += delta
+        # print("new path")
 
         for edge in path_edges:
             edge.decrease_capacity(delta)
@@ -52,7 +53,7 @@ def ford_fulkerson(G, s, t):
 while max_flow < C:
     """We construct the graph G 'backwards' with respect to P_list until we are above C capacity"""
 
-    new_edge_index = P_edges.pop()
+    new_edge_index = P_edges.pop()  # O(1)
     new_edge = edges[new_edge_index]
 
     from_index = new_edge.destination1
