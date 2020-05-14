@@ -31,6 +31,7 @@ def ford_fulkerson(G, s, t):
 
     path_exists, path_edges, delta = find_path(G, source_node, sink_node)
     while path_exists:  # while there is a path that isn't clogged up
+
         break
 
     return 0
