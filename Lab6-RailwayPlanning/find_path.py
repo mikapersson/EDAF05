@@ -11,7 +11,9 @@ def backtrack(G, s, t, log):
         temp_path, temp_delta = log[temp_node]
         if delta > temp_delta:
             delta = temp_delta
+
         path_edges.append(temp_path)
+
         temp_node = temp_node.previous
 
     return path_edges, delta
@@ -22,7 +24,7 @@ def find_path(G, s, t):  # O(m)
 
     log = {}
 
-    for node in G.values():
+    for node in G.values():  # un-visit every node
         node.visited = 0
 
     path_exists = False
@@ -33,7 +35,7 @@ def find_path(G, s, t):  # O(m)
     queue = Queue(maxsize=math.inf)
     queue.put(s)
 
-    debug_counter = 0
+    # debug_counter = 0
     while queue.qsize() > 0 and not path_exists:               # while there is a potential path from s to t
         temp_city = queue.get()            # the first city in the queue
         temp_city.visited = 1
@@ -51,7 +53,6 @@ def find_path(G, s, t):  # O(m)
                 #   delta = temp_delta
 
                 log[next_city] = temp_edge, temp_delta
-                # next_city.visited = 1
                 queue.put(next_city)
 
                 next_city.previous = temp_city
@@ -60,9 +61,6 @@ def find_path(G, s, t):  # O(m)
                 if next_city == t:  # if we've reach the end station (t)
                     path_exists = True
                     path_edges, delta = backtrack(G, s, t, log)
-
-                    debug_counter += 1
-                    print(debug_counter)
                     break
 
     return path_exists, path_edges, delta

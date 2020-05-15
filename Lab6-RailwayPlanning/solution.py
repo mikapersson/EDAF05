@@ -1,6 +1,5 @@
 import sys
 from read_create import read_create
-from edge import *
 from find_path import find_path
 from node import Node
 from copy import deepcopy
@@ -13,9 +12,10 @@ N, M, C, P = list(map(int, sys.stdin.readline().replace('\n', '').split(' ')))  
 edges, P_edges = read_create(M, P)
 
 source = 0  # source node index
-sink = N-1  # sink node index
+sink = N - 1  # sink node index
 graph = {}  # dictionary representation of graph
 max_flow = 0
+
 
 # solution starts at row X
 
@@ -63,7 +63,6 @@ while max_flow < C:
     from_index = new_edge.destination1
     to_index = new_edge.destination2
 
-    # rimligt?
     if from_index not in graph:
         new_city = Node(from_index)
         new_city.edges.append(new_edge)
@@ -82,16 +81,14 @@ while max_flow < C:
     # print("iteration", iterations)
     # print(max_flow)
 
-
 # print("iterations:", iterations)
 print(len(P_edges), max_flow)  # len(P_edges) contain how many routes we didn't have to use (#removed edges)
-
 
 '''
 FRÅGOR
 - eftersom vi har en oriktad graf, kommer vi få dubbla par kanter/nod i residualgrafen då?
 - kommer vi ens behöva kanternas flöden eller en residualgraf?
   -> kan man inte bara minska kapaciteten i residualgrafen eftersom och alltid ha 0 flöde?
-  
+
 - det är något som inte fungerar
 '''

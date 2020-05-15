@@ -5,7 +5,8 @@ class Edge:
         self.destination1 = dest1
         self.destination2 = dest2
         self.capacity = cap
-        self.flow = 0
+        self.flow1 = 0
+        self.flow2 = 0
         self.delta = cap
 
     def is_full(self):
