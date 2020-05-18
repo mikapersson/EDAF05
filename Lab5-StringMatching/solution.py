@@ -3,7 +3,7 @@ import sys
 from math import inf
 
 sys.setrecursionlimit(10**9)
-"""First try of solving lab 5, dynamic programming"""
+"""Lab 5 solution, dynamic programming"""
 
 
 def gain(let1, let2):
@@ -24,9 +24,7 @@ def gain(let1, let2):
     return int(gain_matrix[let_to_ind[let1]][let_to_ind[let2]])
 
 
-
-
-def align_words():
+def align_words():  # O(n*m), n-#letters in word1, m-#letters in word2
     """
     Find optimal alignment, given 'string1' and 'string2',
     such that the total gain of aligning the strings in maximized
@@ -40,7 +38,7 @@ def align_words():
     print(aligned1 + " " + aligned2)
 
 
-def align_words_rec(pos1, pos2):  # O(n^2), n: number of letters
+def align_words_rec(pos1, pos2):
     """
     Recursive help function for 'align_words' function,
     actually fills out 'align_cache'
