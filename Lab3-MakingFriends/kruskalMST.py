@@ -9,7 +9,7 @@ def setup(edges):
     one edge has two nodes, firstNode and secondNode.
     """
     vertices = set()
-    sortedEdges = []  #priority queue
+    sortedEdges = []  #heap priority queue
     for edge in edges:
         distance = edge[2]
         firstNode = edge[0]
@@ -35,7 +35,7 @@ def kruskal(edges):
     setuptime = estime - sstime  #5 sec on largest input
     #print("Finished setup in: ", setuptime)
 
-    ufset = DisjointSets(vertices)  #very quick
+    ufset = DisjointSets(vertices)  #very quick, this is our union-find set
 
     minWeight = 0  #total weight of the MST
 

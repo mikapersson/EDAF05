@@ -32,15 +32,16 @@ class DisjointSets(object):
 
     def find(self, node):
         """
-        Find/return the ID of the representative node for the set in which 'node' is contained.
+        Find/return the ID of the representative node for the set in which 'node' is contained and does
+        path compression at the same time.
         (page 81 in the course book)
         """
         currentNode = node
         while currentNode.parentNode is not None:
             currentNode = currentNode.parentNode
 
-        root = currentNode
-        currentNode = node
+        root = currentNode  # we've found the root
+        currentNode = node  # we go down to 'node' again in order to do path compression
 
         while currentNode.parentNode is not None:  #path compression
             temp = currentNode.parentNode
@@ -66,22 +67,25 @@ class DisjointSets(object):
         index1 = node1ID-1
         index2 = node2ID-1
 
+        if index1 == index2: return
+
         node1 = self.rootNodes[index1]
         node2 = self.rootNodes[index2]
-
-        if index1 == index2: return
 
         root1 = self.rootNodes[self.find(node1)]
         root2 = self.rootNodes[self.find(node2)]
 
-        if root1.height < root2.height: # these lines are a bit sketchy
+        if root1.height < root2.height:
             root1.parentNode = root2
-            root2.height += 1
+            #root2.height += 1  # maybe change name from 'height' to 'weight'?
+            root2.height += root1.height
         elif root2.height < root1.height:
             root2.parentNode = root1
-            root1.height += 1
+            #root1.height += 1
+            root1.height += root2.height
         else:
             root2.parentNode = root1
-            root1.height += 1  #ROTEN SKA INKREMENTERAS
+            #root1.height += 1  #ROTEN SKA INKREMENTERAS
+            root1.height = root2.height
 
         self.setCount -= 1

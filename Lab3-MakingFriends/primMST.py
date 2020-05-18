@@ -11,7 +11,7 @@ def prim(graph):
     total = 0                   # Total cost of edges in MST
     explored = set()            # Set of vertices in MST
     start = next(iter(graph))   # Arbitrary starting vertex
-    unexplored = [(0, start)]   # Unexplored edges ordered by cost (priority queue / heap)
+    unexplored = [(0, start)]   # Unexplored edges ordered by cost (heap priority queue)
     while unexplored:           #we want O(mlogn), m-nr edges, m-nr nodes/friends
         cost, closest = heappop(unexplored)  #pop: O(log n)
         if closest not in explored:          #check set: O(1)

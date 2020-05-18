@@ -7,7 +7,7 @@ from time import time
 """Solution for making friends lab, don't mind all the print statements :)))"""
 
 #print("Solving problem...")
-prims = False  #run Prim's algorithm if True, otherwise Kruskal's algorithm
+prims = True  #run Prim's algorithm if True, otherwise Kruskal's algorithm
 
 rstime = time()
 N, M = list(map(int, sys.stdin.readline().split(' ')))  #read number of people N and pairs M
