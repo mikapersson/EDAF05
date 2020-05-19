@@ -1,15 +1,14 @@
 import sys
 from read_create import read_create
-from find_path import find_path
 from node import Node
-from copy import deepcopy
+from ford_fulkerson import ford_fulkerson
 
 """ Solution to lab 6 """
-
+sys.setrecursionlimit(10**9)
 # SETUP
 N, M, C, P = list(map(int, sys.stdin.readline().replace('\n', '').split(' ')))  # read input
 
-edges, P_edges = read_create(M, P)
+nodes, edges, P_edges = read_create(N, M, P)
 
 source = 0  # source node index
 sink = N - 1  # sink node index
@@ -19,39 +18,6 @@ max_flow = 0
 
 # solution starts at row X
 
-
-def ford_fulkerson(G, s, t):
-    """Finds the maximal flow from s to t in G"""
-
-    tot_flow = 0
-    G_residual = deepcopy(G)
-
-    if s in G_residual:  # if we've added the source node to the graph
-        source_node = G_residual[s]
-    else:
-        return 0
-
-    if t in G_residual:  # if we've added the sink node to the graph
-        sink_node = G_residual[t]
-    else:
-        return 0
-
-    # debug_counter = 0
-    path_exists, path_edges, delta = find_path(G_residual, source_node, sink_node)
-    while path_exists:  # while there is a path that isn't clogged up SOMETHING WRONG HERE
-        tot_flow += delta
-        # print(debug_counter)
-
-        for edge in path_edges:
-            edge.decrease_capacity(delta)
-        # fix edges in G_residual (decrease capacities on the current path and add backward edges)
-        path_exists, path_edges, delta = find_path(G_residual, source_node, sink_node)
-
-        # debug_counter += 1
-
-    return tot_flow
-
-
 # SOLUTION
 iterations = 0
 while max_flow < C:
@@ -60,22 +26,22 @@ while max_flow < C:
     new_edge_index = P_edges.pop()  # O(1)
     new_edge = edges[new_edge_index]
 
-    from_index = new_edge.destination1
-    to_index = new_edge.destination2
+    from_node = new_edge.destination1
+    from_node_index = from_node.index
+    to_node = new_edge.destination2
+    to_node_index = to_node.index
 
-    if from_index not in graph:
-        new_city = Node(from_index)
-        new_city.edges.append(new_edge)
-        graph[from_index] = new_city
+    if from_node_index not in graph:
+        from_node.edges.append(new_edge)
+        graph[from_node_index] = from_node
     else:
-        graph[from_index].edges.append(new_edge)
+        graph[from_node_index].edges.append(new_edge)
 
-    if to_index not in graph:
-        new_city = Node(to_index)
-        new_city.edges.append(new_edge.reverse())
-        graph[to_index] = new_city  # undirected graph
+    if to_node_index not in graph:
+        to_node.edges.append(new_edge)
+        graph[to_node_index] = to_node  # undirected graph
     else:
-        graph[to_index].edges.append(new_edge.reverse())
+        graph[to_node_index].edges.append(new_edge)
 
     max_flow = ford_fulkerson(graph, source, sink)  # find maximal flow with Ford-Fulkersons algorithm
     # print("iteration", iterations)
@@ -86,9 +52,7 @@ print(len(P_edges), max_flow)  # len(P_edges) contain how many routes we didn't 
 
 '''
 FRÅGOR
-- eftersom vi har en oriktad graf, kommer vi få dubbla par kanter/nod i residualgrafen då?
-- kommer vi ens behöva kanternas flöden eller en residualgraf?
-  -> kan man inte bara minska kapaciteten i residualgrafen eftersom och alltid ha 0 flöde?
+- det är något som inte fungerar, vad kan det vara?
 
-- det är något som inte fungerar
+
 '''
