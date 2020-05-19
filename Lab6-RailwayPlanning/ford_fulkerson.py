@@ -7,20 +7,21 @@ def ford_fulkerson(G, start_index, end_index):
     """Finds the maximal flow from s to t in G"""
 
     tot_flow = 0
-    G_residual = deepcopy(G)
 
-    if start_index in G_residual:  # if we've added the source node to the graph
-        source_node = G_residual[start_index]
+    G_f = deepcopy(G)
+
+    if start_index in G_f:  # if we've added the source node to the graph
+        source_node = G_f[start_index]
     else:
         return 0
 
-    if end_index in G_residual:  # if we've added the sink node to the graph
-        sink_node = G_residual[end_index]
+    if end_index in G_f:  # if we've added the sink node to the graph
+        sink_node = G_f[end_index]
     else:
         return 0
 
     # debug_counter = 0
-    path_exists = find_path(G_residual, source_node, sink_node)  # here 'temp_point' is 't'
+    path_exists = find_path(G_f, source_node, sink_node)  # here 'temp_point' is 't'
     while path_exists:  # while there is a path that isn't clogged up
         # print(debug_counter)
         delta = inf
@@ -36,7 +37,7 @@ def ford_fulkerson(G, start_index, end_index):
             temp_node.previous_edge.update_flow(temp_node, delta)
             temp_node = temp_node.previous_node
 
-        path_exists = find_path(G_residual, source_node, sink_node)
+        path_exists = find_path(G_f, source_node, sink_node)
 
         # debug_counter += 1
 
