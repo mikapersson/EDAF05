@@ -19,10 +19,7 @@ max_flow = 0
 # solution starts at row X
 
 # SOLUTION
-iterations = 0
-while max_flow < C:
-    """We construct the graph G 'backwards' with respect to P_list until we are above C capacity"""
-    iterations += 1
+for edge in edges:  # create graph
     new_edge_index = P_edges.pop()  # O(1)
     new_edge = edges[new_edge_index]
 
@@ -43,8 +40,14 @@ while max_flow < C:
     else:
         graph[to_node_index].edges.append(new_edge)
 
+# remove one edge at a time starting from P[0]
+removed_edges = 0
+while max_flow < C:
+    """We construct the graph G 'backwards' with respect to P_list until we are above C capacity"""
+    removed_edges += 1
+
     max_flow = ford_fulkerson(graph, source, sink)  # find maximal flow with Ford-Fulkersons algorithm
-    # print("iteration", iterations)
+    # print("iteration", removed_edges)
     # print(max_flow)
 
 # print("iterations:", iterations)
