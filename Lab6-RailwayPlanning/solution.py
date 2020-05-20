@@ -13,9 +13,6 @@ source = 0  # source node index
 sink = N - 1  # sink node index
 graph = {}  # dictionary representation of graph
 
-
-# solution starts at row X
-
 # SOLUTION
 for index, edge in enumerate(edges):  # create graph
     if index not in P_edges:
@@ -36,10 +33,10 @@ for index, edge in enumerate(edges):  # create graph
         else:
             graph[to_node_index].edges.append(edge)
 
-iteration = 0
+# iteration = 0
 max_flow = ford_fulkerson(graph, source, sink)  # current max-flow in 'graph'
 while max_flow < C:                             # add an edge in 'P_edges' at a time
-    iteration += 1
+    # iteration += 1
     new_edge_index = P_edges.pop()  # O(1)
     new_edge = edges[new_edge_index]
 
@@ -67,9 +64,3 @@ while max_flow < C:                             # add an edge in 'P_edges' at a 
 
 print(len(P_edges), max_flow)  # len(P_edges) contain how many routes we didn't have to use (#removed edges)
 
-'''
-FRÅGOR
-- det är något som inte fungerar, vad kan det vara?
-
-
-'''
