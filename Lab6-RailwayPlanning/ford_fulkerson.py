@@ -6,7 +6,7 @@ from math import inf
 def ford_fulkerson(G, start_index, end_index):
     """Finds the maximal flow from s to t in G"""
     # print("Entered FF")
-    tot_flow = 0
+    new_flow = 0
 
     if start_index in G:  # if we've added the source node to the graph
         source_node = G[start_index]
@@ -29,7 +29,7 @@ def ford_fulkerson(G, start_index, end_index):
             delta = min(delta, temp_node.previous_edge.get_capacity(temp_node))
             temp_node = temp_node.previous_node
 
-        tot_flow += delta
+        new_flow += delta
         temp_node = sink_node
         while temp_node != source_node:  # update flow along the found path
             temp_node.previous_edge.update_flow(temp_node, delta)
@@ -39,4 +39,4 @@ def ford_fulkerson(G, start_index, end_index):
 
         # debug_counter += 1
 
-    return tot_flow
+    return new_flow
