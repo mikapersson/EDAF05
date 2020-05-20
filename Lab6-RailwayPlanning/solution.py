@@ -60,11 +60,11 @@ while max_flow < C:                             # add an edge in 'P_edges' at a 
     else:
         graph[to_node_index].edges.append(new_edge)
 
-    max_flow = ford_fulkerson(graph, source, sink)  # find maximal flow with Ford-Fulkersons algorithm
-    print("iteration", iteration)
-    print(max_flow)
+    max_flow += ford_fulkerson(graph, source, sink)  # find maximal flow with Ford-Fulkersons algorithm
+    # print("iteration", iteration)
+    # print(max_flow)
 
-# print("iterations:", iterations)
+
 print(len(P_edges), max_flow)  # len(P_edges) contain how many routes we didn't have to use (#removed edges)
 
 '''
