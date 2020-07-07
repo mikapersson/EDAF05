@@ -9,7 +9,7 @@ def GS():
     #print("Read data start")
     men, women, readTime= readDataList.readDataList()
     #print("Read data finished")
-    pairs = {}  #dictionay with 'woman : man'-pairs (just indices)
+    pairs = {}  #dictionary with 'woman : man'-pairs (just indices, ints)
     p = men.copy()
 
     while len(p) > 0:
