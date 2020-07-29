@@ -1,3 +1,6 @@
+#ifndef NODE_H
+#define NODE_H
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -29,3 +32,5 @@ struct Node {  // members are public by default
         return o;
     }
 };
+
+#endif
