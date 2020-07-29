@@ -98,11 +98,5 @@ map<string, Node> create_graph(const int& nr_words){
         }
     }
 
-
-    cout << endl;
-    for(auto e : graph){
-        cout << e.first << " : " << e.second << endl;
-    }
-
     return graph;
 }
