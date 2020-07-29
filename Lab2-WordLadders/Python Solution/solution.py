@@ -32,7 +32,7 @@ def countEdges(node):
     return count
 
 
-def BFS(graph, s, t):
+def BFS(graph, s, t):  # s and t are Node objects
     """BFS algorithm (p.88 in the course book)"""
     if s.word == t.word:
         print(0)
