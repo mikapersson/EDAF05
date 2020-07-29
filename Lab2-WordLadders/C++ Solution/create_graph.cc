@@ -1,43 +1,11 @@
-#include <iostream>
 #include <map>
-#include <vector>
-#include <string>
-#include <memory>
-#include <utility>
-#include <iterator>
 #include <algorithm>
+#include "node.h"
 
 using std::cin;
-using std::cout;
-using std::endl;
 using std::map;
-using std::vector;
-using std::string;
 using std::ostream;
-using std::pair;
 using std::all_of;
-
-/**
- * Class describing a node, a five letter word with edges 
- * to other nodes (represented by a vector<Node>) that is.
- */
-struct Node {  // members are public by default
-    Node() = default;
-    Node(const string& w) : word(w), visited(false) {}
-    string word;
-    bool visited;
-    vector<Node> neighbors;
-    Node* previous;
-
-    friend ostream& operator<<(ostream& o, const Node& node) { 
-        o << "Node " << node.word << " with neighbors: ";
-        for(const auto& nghbr : node.neighbors){
-            o << nghbr.word << " ";
-        } o << endl;
-
-        return o;
-    }
-};
 
 // Used as predicate in all_of-function in edge_exists method below
 bool boolean(const bool& b){
@@ -97,6 +65,12 @@ map<string, Node> create_graph(const int& nr_words){
                 from->second.neighbors.emplace_back(to->first);
         }
     }
+
+    /*
+    // Verify that the graph was correctly built
+    for(const auto& p : graph){
+        cout << p.second << endl;
+    }*/
 
     return graph;
 }

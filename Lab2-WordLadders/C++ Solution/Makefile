@@ -27,7 +27,6 @@ all: $(PROGS)
 
 # Targets rely on implicit rules for compiling and linking	
 cppkladd: cppkladd.o
-solution: solution.o
 
 # Phony targets
 .PHONY: all test clean distclean
