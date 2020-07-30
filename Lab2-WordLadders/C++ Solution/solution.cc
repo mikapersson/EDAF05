@@ -4,7 +4,7 @@
 
 using std::pair;
 
-void answer_queries(const map<string, Node>& graph, const vector<pair<string, string>>& queries){
+void answer_queries(map<string, Node>& graph, const vector<pair<string, string>>& queries){
     for(auto& q : queries){
         int distance = shortest_distance(graph.at(q.first), graph.at(q.second));
         if(distance > 0)
@@ -21,6 +21,7 @@ int main(){
 
     map<string, Node> graph = create_graph(nr_words);
 
+    // Read queries
     string from;
     string to;
     vector<pair<string, string>> queries;
