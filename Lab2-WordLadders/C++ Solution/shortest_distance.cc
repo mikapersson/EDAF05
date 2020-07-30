@@ -24,7 +24,7 @@ int count_edges(Node& node){
  * @param to
  * @return distance between the two nodes
  */ 
-int shortest_distance(Node from, Node to){  
+int shortest_distance(Node from, Node to){  // call by value -> no need to reset graph every call
     cout << endl;
     cout << "Finding distance from " << from.word << " to " << to.word << ": " << endl;
     if(from.word == to.word)
@@ -39,16 +39,17 @@ int shortest_distance(Node from, Node to){
         q.pop();                // remove the node from q (pop doesn't return front())
         cout << "\tpopped " << next.word << endl;
         for(auto& neighbor : next.neighbors){
-            cout << "\t\tneighbor " << neighbor.word << endl;
-            if(neighbor.visited == false){
-                neighbor.visited = true;
-                neighbor.previous = &next;  // not dynamic allocation
-                q.push(neighbor);
-                cout << "\t\t\tpushed " << neighbor.word << endl;
-                if(neighbor.word == to.word)
-                    return count_edges(neighbor);
+            cout << "\t\tneighbor " << neighbor->word << endl;
+            if(neighbor->visited == false){
+                neighbor->visited = true;
+                neighbor->previous = &next;  // not dynamic allocation
+                q.push(*neighbor);
+                cout << "\t\t\tpushed " << neighbor->word << endl;
+                if(neighbor->word == to.word)
+                    return count_edges(*neighbor);
             }
         }
     }
+    
     return 0;  // no path
 }

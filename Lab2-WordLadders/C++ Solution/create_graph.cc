@@ -1,6 +1,7 @@
 #include <map>
 #include <algorithm>
 #include "node.h"
+#include <utility>
 
 using std::cin;
 using std::map;
@@ -41,36 +42,38 @@ bool edge_exists(const string& from, string to) {
  * @param nr_words number of words/nodes in graph 
  * @return directed graph  
  */
-map<string, Node> create_graph(const vector<string>::size_type& nr_words){
+std::pair<map<string, Node>, vector<Node*>> create_graph(const vector<Node>::size_type& nr_words){
     map<string, Node> graph;
 
-    // Read words into a vector
-    vector<string> words;
-    words.resize(nr_words);
+    // Read words/nodes into a vector
+    vector<Node*> node_ptrs;
+    node_ptrs.resize(nr_words);
     string temp_word;
     for(vector<string>::size_type i = 0; i != nr_words; ++i){
         cin >> temp_word;
-        words[i] = temp_word;
+        Node* new_node = new Node(temp_word);
+        node_ptrs[i] = new_node;
     }
 
-    // Create skeleton for graph (Node values will not have any neighbors yet)
-    for(const auto& w : words){
-        graph.emplace(w, Node(w));
-    }
-
-    // Add neighbors to each node in the graph
-    for(auto from = graph.begin(); from != graph.end(); ++from) {
-        for(auto to = graph.begin(); to != graph.end(); ++to) {
-            if(edge_exists(from->first, to->first) && from != to)
-                from->second.neighbors.emplace_back(to->first);
+    // Add neighbors to nodes  ERROR
+    for(auto from : node_ptrs) {
+        for(auto to : node_ptrs) {
+            if(edge_exists(from->word, to->word) && from->word != to->word)
+                from->neighbors.push_back(to);
         }
     }
-
     
+
+    // Add nodes to graph
+    for(const auto& node_ptr : node_ptrs){
+        graph.emplace(node_ptr->word, *node_ptr);
+    }
+    
+    /*
     // Verify that the graph was correctly built
     for(const auto& p : graph){
         cout << p.second << endl;
-    } cout << endl;
+    } cout << endl;*/
 
-    return graph;
+    return std::make_pair(graph, node_ptrs);
 }

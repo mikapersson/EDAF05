@@ -1,6 +1,6 @@
 #include "create_graph.cc"
 #include "shortest_distance.cc"
-#include <utility>
+#include <tuple>
 
 using std::pair;
 
@@ -17,17 +17,19 @@ void answer_queries(map<string, Node>& graph, const vector<pair<string, string>>
 }
 
 int main(){
-    vector<string>::size_type nr_words;
+    vector<Node>::size_type nr_words;
     int nr_queries;
     cin >> nr_words;
     cin >> nr_queries;
 
-    map<string, Node> graph = create_graph(nr_words);
+    map<string, Node> graph;
+    vector<Node*> for_deletion;  // contains raw pointers (smart pointers not used)
+    std::tie(graph, for_deletion) = create_graph(nr_words);
 
     auto& n = graph.at("baccc");
     cout << "\n" << n << endl;
-    for(auto e : n.neighbors){
-        cout << e << endl;
+    for(const auto& e : n.neighbors){
+        cout << *e << endl;
     } cout << endl;
 
     // Read queries
@@ -40,5 +42,9 @@ int main(){
     }
 
     answer_queries(graph, queries);
+
+    for(auto p : for_deletion){
+        delete p;
+    }
 }
 

@@ -30,13 +30,13 @@ struct Node {  // members are public by default
 
     string word;
     bool visited;
-    vector<Node> neighbors;
+    vector<Node*> neighbors;
     Node* previous;
 
     friend ostream& operator<<(ostream& o, const Node& node) { 
         o << "Node " << node.word << " with neighbors: ";
         for(const auto& nghbr : node.neighbors){
-            o << nghbr.word << " ";
+            o << nghbr->word << " ";
         }
 
         return o;
