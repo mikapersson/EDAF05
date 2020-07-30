@@ -41,7 +41,7 @@ bool edge_exists(const string& from, string to) {
  * @param nr_words number of words/nodes in graph 
  * @return directed graph  
  */
-map<string, Node> create_graph(const int& nr_words){
+map<string, Node> create_graph(const vector<string>::size_type& nr_words){
     map<string, Node> graph;
 
     // Read words into a vector
@@ -66,11 +66,11 @@ map<string, Node> create_graph(const int& nr_words){
         }
     }
 
-    /*
+    
     // Verify that the graph was correctly built
     for(const auto& p : graph){
         cout << p.second << endl;
-    }*/
+    } cout << endl;
 
     return graph;
 }

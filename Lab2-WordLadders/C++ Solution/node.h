@@ -18,6 +18,8 @@ using std::ostream;
 struct Node {  // members are public by default
     Node() = default;
     Node(const string& w) : word(w), visited(false), previous(nullptr) {}
+    Node(const Node& other) : word(other.word), visited(other.visited),
+                            neighbors(other.neighbors), previous(other.previous) {}
     Node& operator=(const Node& other) {  // Copy assignment
         word = other.word;
         visited = other.visited;
