@@ -13,9 +13,15 @@ void answer_queries(map<string, Node>& graph, const vector<pair<string, string>>
         if(distance > 0)
             cout << distance << endl;
         else cout << "Impossible" << endl;
+
+        // Reset nodes
+        for(auto it = graph.begin(); it != graph.end(); ++it){
+            it->second.visited = false;
+            it->second.previous = nullptr;
+        }
     }
 }
-
+// 
 int main(){
     vector<Node>::size_type nr_words;
     int nr_queries;
@@ -25,12 +31,6 @@ int main(){
     map<string, Node> graph;
     vector<Node*> for_deletion;  // contains raw pointers (smart pointers not used)
     std::tie(graph, for_deletion) = create_graph(nr_words);
-
-    auto& n = graph.at("baccc");
-    cout << "\n" << n << endl;
-    for(const auto& e : n.neighbors){
-        cout << *e << endl;
-    } cout << endl;
 
     // Read queries
     string from;

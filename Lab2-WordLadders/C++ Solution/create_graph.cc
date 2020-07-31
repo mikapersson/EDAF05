@@ -35,6 +35,12 @@ bool edge_exists(const string& from, string to) {
     return all_of(exist.begin(), exist.end(), boolean);
 }
 
+void print_graph(const map<string, Node>& graph) {
+    for(const auto& p : graph){
+        cout << p.second << endl;
+    } cout << endl;
+}
+
 
 /**
  * Creates a directed graph from input through stdin
@@ -55,7 +61,7 @@ std::pair<map<string, Node>, vector<Node*>> create_graph(const vector<Node>::siz
         node_ptrs[i] = new_node;
     }
 
-    // Add neighbors to nodes  ERROR
+    // Add neighbors to nodes
     for(auto from : node_ptrs) {
         for(auto to : node_ptrs) {
             if(edge_exists(from->word, to->word) && from->word != to->word)
@@ -69,11 +75,9 @@ std::pair<map<string, Node>, vector<Node*>> create_graph(const vector<Node>::siz
         graph.emplace(node_ptr->word, *node_ptr);
     }
     
-    /*
+    
     // Verify that the graph was correctly built
-    for(const auto& p : graph){
-        cout << p.second << endl;
-    } cout << endl;*/
+    //print_graph(graph);
 
     return std::make_pair(graph, node_ptrs);
 }
