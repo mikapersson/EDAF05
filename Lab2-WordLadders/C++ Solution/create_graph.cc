@@ -48,8 +48,8 @@ void print_graph(const map<string, Node>& graph) {
  * @param nr_words number of words/nodes in graph 
  * @return directed graph  
  */
-std::pair<map<string, Node>, vector<Node*>> create_graph(const vector<Node>::size_type& nr_words){
-    map<string, Node> graph;
+std::pair<map<string, Node*>, vector<Node*>> create_graph(const vector<Node>::size_type& nr_words){
+    map<string, Node*> graph;
 
     // Read words/nodes into a vector
     vector<Node*> node_ptrs;
@@ -72,7 +72,7 @@ std::pair<map<string, Node>, vector<Node*>> create_graph(const vector<Node>::siz
 
     // Add nodes to graph
     for(const auto& node_ptr : node_ptrs){
-        graph.emplace(node_ptr->word, *node_ptr);
+        graph.emplace(node_ptr->word, node_ptr);
     }
     
     

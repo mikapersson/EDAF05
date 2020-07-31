@@ -7,17 +7,17 @@ using std::pair;
 /**
  * Find shortest path (with BFS) for every query and print through stdout
  */
-void answer_queries(map<string, Node>& graph, const vector<pair<string, string>>& queries){
+void answer_queries(map<string, Node*>& graph, const vector<pair<string, string>>& queries){
     for(auto& q : queries){
         int distance = shortest_distance(graph.at(q.first), graph.at(q.second));
-        if(distance > 0)
+        if(distance >= 0)
             cout << distance << endl;
         else cout << "Impossible" << endl;
 
         // Reset nodes
         for(auto it = graph.begin(); it != graph.end(); ++it){
-            it->second.visited = false;
-            it->second.previous = nullptr;
+            it->second->visited = false;
+            it->second->previous = nullptr;
         }
     }
 }
@@ -28,7 +28,7 @@ int main(){
     cin >> nr_words;
     cin >> nr_queries;
 
-    map<string, Node> graph;
+    map<string, Node*> graph;
     vector<Node*> for_deletion;  // contains raw pointers (smart pointers not used)
     std::tie(graph, for_deletion) = create_graph(nr_words);
 
