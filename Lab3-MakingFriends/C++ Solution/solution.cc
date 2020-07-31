@@ -1,8 +1,6 @@
 #include "make_graph.cc"
-#include <tuple>  // std::tie
 #include "prim.cc"
 
-using std::tie;
 using std::cout;
 
 /**
