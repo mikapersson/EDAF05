@@ -16,6 +16,7 @@ typedef vector<point> point_vector;
 
 void print_points(const point_vector&);
 double distance(const point&, const point&);
+double shortest_distance_rec(point_vector&, point_vector&, int);
 
 double shortest_distance(const point_vector& points) {
     point_vector points_x(points.begin(), points.end());  // points sorted according to the x-coordinate
@@ -34,7 +35,8 @@ double shortest_distance(const point_vector& points) {
 }
 
 double shortest_distance_rec(point_vector& p_x, point_vector& p_y, int size) {
-    if(size <= 3){  // base case 
+    // Base case
+    if(size <= 3){  
         double base_distance = std::numeric_limits<double>::max();
         point_vector base_points;
         for(int i = 0; i != size; ++i) {
@@ -51,6 +53,7 @@ double shortest_distance_rec(point_vector& p_x, point_vector& p_y, int size) {
         return base_distance;
     }
 
+    // Split point_vectors in half according to the x-coordinate
     int middle_index = size/2;  // index for the middle point in point_vectors
     point middle_point = p_x[middle_index];
     point_vector left_x(p_x.begin(), p_x.begin() + middle_index);  // split p_x in half
@@ -58,7 +61,42 @@ double shortest_distance_rec(point_vector& p_x, point_vector& p_y, int size) {
     point_vector right_x(p_x.begin() + middle_index, p_x.end());
     point_vector right_y;
 
-    set<point> 
+    std::set<point> left_side(left_x.begin(), left_x.end());  // for efficient point-look-up
+    for(const auto& p : p_y) {
+        if(left_side.count(p) == 1)
+            left_y.push_back(p);
+        else right_y.push_back(p);
+    }
+
+    double left_distance = shortest_distance_rec(left_x, left_y, middle_index);
+    double right_distance = shortest_distance_rec(right_x, right_y, size - middle_index);
+    double delta = std::min(left_distance, right_distance);
+
+    // Find points which are within a distance 'delta' of 'middle_point' (x-coordinate)
+    point_vector interval_points;
+    for(const auto& p : p_y) {
+        bool inside_interval = std::abs(p.first - middle_point.first) < delta;
+        if(inside_interval)
+            interval_points.push_back(p);
+    }
+
+    // Brute force: check 15 closest points in y-direction
+    auto interval_length = interval_points.size();
+    for(point_vector::size_type index1 = 0; index1 != interval_length; ++index1) {
+        point point1 = interval_points[index1];
+        auto last_index = 15 + index1;
+        if(last_index > interval_length)
+            last_index = interval_length;
+
+        for(auto index2 = index1+1; index2 != last_index; ++index2){
+            point point2 = interval_points[index2];
+            double closer = distance(point1, point2);
+            if(closer < delta)
+                delta = closer;
+        }
+    }
+
+    return delta;
 }
 
 // Used for verifying that the point_vectors are correct
