@@ -1,28 +1,6 @@
-#include <iostream>
-#include <map>
-#include <string>
-#include <utility>
-#include <vector>
+#include "node.h"
 
-using namespace std;
-
-/**
- * Node class used in graph
- */
-struct Node {
-    Node(const int& n) : number(n) , visited(false) {}
-    int number;
-    bool visited;
-    vector<pair<Node*, int>> neighbors;
-
-    friend ostream& operator<<(ostream& o, const Node& n) {
-        o << "Node " << n.number << boolalpha << ", visited = " << n.visited << ", neighbors:" << endl;
-        for(const auto& e : n.neighbors){
-            o << "\t" << e.first->number << " : " << e.second << endl;
-        }
-        return o;
-    }
-};
+using std::cin;
 
 /**
  * Creates the graph corresponding to the input (through stdin)
@@ -34,14 +12,14 @@ vector<Node*> make_graph() {
     int nr_edges;
     cin >> nr_nodes >> nr_edges;
 
-    // Create vector containing all nodes
+    // Create vector/graph containing all nodes
     vector<Node*> graph;  // adjacency list for graph implementation
     graph.reserve(nr_nodes);
     for(int i = 0; i != nr_nodes; ++i) {
         graph.emplace_back(new Node(i+1));
     }
 
-    // Place nodes and read edges/pairs into graph
+    // Read edges/pairs into graph
     int from;
     int to;
     int distance;
