@@ -5,6 +5,9 @@
 using std::tie;
 using std::cout;
 
+/**
+ * Can be used to verify that the graph was somehow correctly built (but use debugging instead)
+ */
 void print_graph(const vector<Node*>& graph){
     for(const auto& n : graph) {
         cout << *n << endl;
@@ -12,14 +15,7 @@ void print_graph(const vector<Node*>& graph){
 }
 
 int main(){
-
-    vector<Node*> graph;
-    graph = make_graph();
-
-
-    // Verifying that the graph was correctly built 
-    // (though this can be checked while debugging)
-    // print_graph(graph);
+    vector<Node*> graph = make_graph();
 
     int min_distance = minimum_distance(graph);
     cout << min_distance << endl;
