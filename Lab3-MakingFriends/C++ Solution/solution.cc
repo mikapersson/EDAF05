@@ -19,7 +19,7 @@ int main(){
 
     // Verifying that the graph was correctly built 
     // (though this can be checked while debugging)
-    print_graph(graph);
+    // print_graph(graph);
 
     int min_distance = minimum_distance(graph);
     cout << min_distance << endl;
