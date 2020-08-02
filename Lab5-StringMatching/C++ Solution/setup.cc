@@ -59,6 +59,14 @@ std::tuple<vector<vector<int>>, map<char, int>, vector<pair<string, string>>> se
         queries.emplace_back(first, second);
     }
 
+    /*
+    print_gain_matrix(gain_matrix);
+    cout << endl;
+    print_letter_index(letter_to_index);
+    cout << endl;
+    print_queries(queries);
+    cout << endl;*/
+
     return std::make_tuple(gain_matrix, letter_to_index, queries);
 }
 

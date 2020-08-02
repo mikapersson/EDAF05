@@ -59,7 +59,7 @@ pair<int, int> align_words_rec(const int& pos1, const int& pos2){
     if(it != align_cache.end()){
         return it->second;
     } else {
-        int position;  // 
+        int position;  // determines what alternative is optimal (insert * in word1, word2? etc..)
         int max_gain;
 
         // Three base cases
@@ -97,7 +97,7 @@ pair<int, int> align_words_rec(const int& pos1, const int& pos2){
 
             // Determine which of the three cases that was optimal
             int temp_max = std::max(gain1, gain2);
-            int max_gain = std::max(temp_max, gain3);
+            max_gain = std::max(temp_max, gain3);
             if(max_gain == gain1){
                 position = 0;
             } else if(max_gain == gain2){
