@@ -1,4 +1,5 @@
 #include "setup.cc"
+#include <algorithm>  // std::max
 
 using std::tie;
 
@@ -95,7 +96,8 @@ pair<int, int> align_words_rec(const int& pos1, const int& pos2){
             gain3 -= 4;
 
             // Determine which of the three cases that was optimal
-            int max_gain = std::max(gain1, gain2, gain3);
+            int temp_max = std::max(gain1, gain2);
+            int max_gain = std::max(temp_max, gain3);
             if(max_gain == gain1){
                 position = 0;
             } else if(max_gain == gain2){
@@ -103,10 +105,10 @@ pair<int, int> align_words_rec(const int& pos1, const int& pos2){
             } else {
                 position = 2;
             }
-
-            align_cache.emplace(std::make_pair(pos1, pos2), std::make_pair(max_gain, position));
-            return std::make_pair(max_gain, position);
         }
+
+        align_cache.emplace(std::make_pair(pos1, pos2), std::make_pair(max_gain, position));
+        return std::make_pair(max_gain, position);
     }
 }
 
@@ -117,8 +119,8 @@ pair<string, string> backtrack(){
     string aligned1("");
     string aligned2("");
 
-    auto pos1 = word1.size()-1;
-    auto pos2 = word2.size()-1;
+    int pos1 = word1.size()-1;
+    int pos2 = word2.size()-1;
 
     while(pos1 >= 0 || pos2 >=0){
         int ignore;
