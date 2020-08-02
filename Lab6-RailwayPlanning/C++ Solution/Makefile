@@ -26,6 +26,7 @@ PROGS =  kladd solution
 all: $(PROGS)
 
 # Targets rely on implicit rules for compiling and linking	
+solution: solution.o node.o edge.o 
 
 # Phony targets
 .PHONY: all test clean distclean

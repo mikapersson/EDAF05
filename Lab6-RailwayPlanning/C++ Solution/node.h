@@ -1,10 +1,14 @@
 #ifndef NODE_H
 #define NODE_H
 
+#include <iostream>
 #include <vector>
-class Edge;  // forward declaration
+struct Edge;  // forward declaration
 
-class Node{
+struct Node{
+    friend std::ostream& operator<<(std::ostream& o, const Node& n){
+        return o << "Node " << n.index << std::boolalpha << ", visited=" << n.visited;
+    }   
     Node(const int&);
     int index;
     bool visited;

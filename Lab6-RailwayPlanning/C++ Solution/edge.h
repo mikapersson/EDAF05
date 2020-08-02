@@ -2,9 +2,9 @@
 #define EDGE_H
 
 
-class Node;  // forward declaration
+struct Node;  // forward declaration
 
-class Edge{
+struct Edge{
     Edge(Node* n1, Node* n2, const int& cap);
     Node* destination1;
     Node* destination2;
