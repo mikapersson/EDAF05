@@ -11,7 +11,8 @@ using std::endl;
 
 typedef vector<Node*> node_vector;
 typedef vector<Edge*> edge_vector;
-typedef vector<int> route_vector;
+typedef vector<int> route_vector;  // must be vector to enable searching for content
+typedef vector<Node*> Graph;
 
 std::tuple<node_vector, edge_vector, route_vector> setup(const int& nr_nodes, const int& nr_edges, const int& nr_routes){
     // Create nodes
