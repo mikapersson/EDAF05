@@ -11,6 +11,10 @@ std::pair<route_vector::size_type, int> max_flow(Graph& graph, const int& capaci
 void free_nodes(node_vector& nodes);
 void free_edges(edge_vector& edges);
 
+void debug(){
+    cout << "CHECK" << endl;
+}
+
 int main(){
     int nr_nodes, nr_edges, capacity, nr_routes;
     cin >> nr_nodes >> nr_edges >> capacity >> nr_routes;
@@ -23,8 +27,9 @@ int main(){
     Graph graph = create_graph(nodes, edges, routes);  // initial graph without route edges
     route_vector::size_type nr_removed;
     int maxf;
-    tie(nr_removed, maxf) = max_flow(graph, capacity, nr_nodes, edges, routes);
+    tie(nr_removed, maxf) = max_flow(graph, capacity, nr_nodes, edges, routes);  // DEBUG
     cout << nr_removed << " " << maxf << endl;
+    
 
     // Free dynamically allocated memory (raw pointers)
     free_nodes(nodes);

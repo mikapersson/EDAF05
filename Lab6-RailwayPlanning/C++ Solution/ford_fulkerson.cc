@@ -1,8 +1,9 @@
 #include "edge.h"
 #include "node.h"
-#include "setup.cc"
 #include <queue>
 #include <limits>
+
+typedef vector<Node*> Graph;
 
 // Function used in ford_fulkerson()
 bool find_path(Graph& graph, Node* source, Node* sink);
@@ -39,10 +40,9 @@ int ford_fulkerson(Graph& graph, const int& source_index, const int& sink_index)
             temp_node->previous_edge->update_flow(temp_node, delta);
             temp_node = temp_node->previous_node;
         }
-
         path_exists = find_path(graph, source, sink);
-    }
-    
+    } 
+    return new_flow;
 }
 
 /**
@@ -88,6 +88,5 @@ bool find_path(Graph& graph, Node* source, Node* sink){
             }
         }
     }
-
     return path_exists;
 }
