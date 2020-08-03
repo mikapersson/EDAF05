@@ -49,5 +49,45 @@ int ford_fulkerson(Graph& graph, const int& source_index, const int& sink_index)
  * Finds a path from source to sink using BFS 
  */
 bool find_path(Graph& graph, Node* source, Node* sink){
+    // Reset the nodes in 'graph'
+    for(auto& n : graph){
+        n->visited = false;
+        n->previous_node = nullptr;
+        n->previous_edge = nullptr;
+    }
 
+    bool path_exists = false;
+    source->visited = true;
+    std::queue<Node*> node_queue;
+    node_queue.push(source);
+
+    // While there is a potential path from 'source' to 'sink'
+    while(node_queue.size() > 0 && !path_exists){
+        Node* temp_node = node_queue.front();
+        temp_node->visited = true;
+        node_queue.pop();
+
+        Node* next_node(nullptr);
+        // Examine all edges from 'temp_node'
+        for(auto& edge : temp_node->edges){
+            if(edge->destination1 == temp_node)
+                next_node = edge->destination2;
+            else next_node = edge->destination1;
+
+            // If the current edge is not full
+            if(!(edge->is_full(next_node) || next_node->visited)){
+                node_queue.push(next_node);
+                next_node->previous_node = temp_node;
+                next_node->previous_edge = edge;
+
+                // If we've reached 'sink'
+                if(next_node == sink){
+                    path_exists = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    return path_exists;
 }
