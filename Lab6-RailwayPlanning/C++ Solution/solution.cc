@@ -10,7 +10,7 @@ std::pair<route_vector::size_type, int> max_flow(Graph& graph, const int& capaci
                                 const int& nr_nodes, edge_vector& edges, route_vector& routes);
 void free_nodes(node_vector& nodes);
 void free_edges(edge_vector& edges);
-
+void print_graph(const Graph& graph);
 void debug(){
     cout << "CHECK" << endl;
 }
@@ -27,7 +27,7 @@ int main(){
     Graph graph = create_graph(nodes, edges, routes);  // initial graph without route edges
     route_vector::size_type nr_removed;
     int maxf;
-    tie(nr_removed, maxf) = max_flow(graph, capacity, nr_nodes, edges, routes);  // DEBUG
+    tie(nr_removed, maxf) = max_flow(graph, capacity, nr_nodes, edges, routes); 
     cout << nr_removed << " " << maxf << endl;
     
 
@@ -41,7 +41,8 @@ int main(){
 Graph create_graph(node_vector& nodes, edge_vector& edges, route_vector& routes){
     Graph graph(nodes.size());  // elements default initialized to nullptr
     for(edge_vector::size_type i = 0; i != edges.size(); ++i){
-        if(std::find(routes.begin(), routes.end(), i) != routes.end()){  // if the edge isn't included in 'routes'
+        if(std::find(routes.begin(), routes.end(), i) == routes.end()){  // if the edge isn't included in 'routes'
+            cout << "adding edge" << endl;
             auto temp_edge = edges[i];  // pointer to an edge-object
             Node* from = temp_edge->destination1;
             int from_index = from->index;
@@ -78,7 +79,10 @@ std::pair<route_vector::size_type, int> max_flow(Graph& graph, const int& capaci
 
     // Add one route at a time to the graph and run FF algorithm for each iteration
     int max = ford_fulkerson(graph, source_index, sink_index);  // initial run
+    
+    int count{1};
     while(max < capacity){
+        ++count;
         int new_edge_index = routes.back();
         routes.pop_back();
 
@@ -101,8 +105,10 @@ std::pair<route_vector::size_type, int> max_flow(Graph& graph, const int& capaci
         } else {
             graph[to_index]->edges.push_back(new_edge);
         }
-
+        
+        print_graph(graph);
         max += ford_fulkerson(graph, source_index, sink_index);
+        cout << "count=" << count << ", flow=" << max << endl;
     }
     return std::make_pair(routes.size(), max);
 }
@@ -117,4 +123,15 @@ void free_edges(edge_vector& edges){
     for(auto& e : edges){
         delete e;
     }
+}
+
+void print_graph(const Graph& graph){
+    cout << "Printing graph..." << endl;
+    for(const auto& e : graph){
+        if(e != nullptr){
+            e->print_node();
+            cout << endl;
+        }
+    }
+    cout << "...finished printing" << endl;
 }

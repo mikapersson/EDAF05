@@ -1,7 +1,11 @@
 #include "edge.h"
 #include "node.h"
 
-Edge::Edge(Node* n1, Node* n2, const int& cap) : destination1(n1), destination2(n2), capacity(cap) {}
+using std::cout;
+using std::endl;
+
+Edge::Edge(Node* n1, Node* n2, const int& cap) : destination1(n1), destination2(n2), capacity(cap),
+                                            front_flow(0), back_flow(0) {}
 
 /**
  * Get capacity of edge towards node 'n'
@@ -32,4 +36,10 @@ bool Edge::is_full(const Node* n){
     if(n == destination2)
         return capacity == front_flow;
     else return capacity == back_flow;
+}
+
+void Edge::print_edge(){
+    cout << "Edge from " << destination1->index << " to " << destination2->index << 
+            " with capacity " << capacity << ", front flow " << front_flow <<
+            " and back flow " << back_flow;
 }

@@ -6,15 +6,24 @@
 struct Edge;  // forward declaration
 
 struct Node{
+    /*
     friend std::ostream& operator<<(std::ostream& o, const Node& n){
-        return o << "Node " << n.index << std::boolalpha << ", visited=" << n.visited;
-    }   
+        o << "Node " << n.index << std::boolalpha << ", visited=" << n.visited <<
+            ", edges: ";
+        for(const auto& e : n.edges){
+            o << "\t" << *e;
+        }
+        return o;
+    }*/
+
     Node(const int&);
     int index;
     bool visited;
     Node* previous_node;
     Edge* previous_edge;
     std::vector<Edge*> edges;
+
+    void print_node();
 };
 
 #endif
