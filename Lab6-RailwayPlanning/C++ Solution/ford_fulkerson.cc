@@ -22,7 +22,7 @@ int ford_fulkerson(Graph& graph, const int& source_index, const int& sink_index)
     if(sink == nullptr)  // if the sink node -||-
         return 0;
 
-    bool path_exists = find_path(graph, source, sink);  // ERROR
+    bool path_exists = find_path(graph, source, sink);
     while(path_exists){
         int delta = std::numeric_limits<int>::max();
         Node* temp_node = sink;
@@ -42,7 +42,6 @@ int ford_fulkerson(Graph& graph, const int& source_index, const int& sink_index)
         }
         path_exists = find_path(graph, source, sink);
     } 
-    //cout << "\t" << new_flow << endl;
     return new_flow;
 }
 
@@ -52,9 +51,11 @@ int ford_fulkerson(Graph& graph, const int& source_index, const int& sink_index)
 bool find_path(Graph& graph, Node* source, Node* sink){
     // Reset the nodes in 'graph'
     for(auto& n : graph){
-        n->visited = false;
-        n->previous_node = nullptr;
-        n->previous_edge = nullptr;
+        if(n != nullptr){
+            n->visited = false;
+            n->previous_node = nullptr;
+            n->previous_edge = nullptr;
+        }
     }
 
     bool path_exists = false;
